@@ -19,23 +19,25 @@ async function main() {
 	savedDataFormEl = document.getElementById("saved-data");
 	profileNameSelectorEl = document.getElementById("profile-names");
 	profileLabelEl = document.getElementById("profile-label");
-	var createAnotherProfileBtn = document.getElementById("create-another-profile-btn");
-	var logoutBtn = document.getElementById("logout-btn");
 
-	createProfileFormEl.addEventListener("submit",onCreateProfile,false);
-	loginFormEl.addEventListener("submit",onLogin,false);
-	savedDataFormEl.addEventListener("submit",onSaveData,false);
-	createAnotherProfileBtn.addEventListener("click",switchToRegisterMode,false);
-	logoutBtn.addEventListener("click",onLogout,false);
+	buttonEventHandlers: {
+		let createAnotherProfileBtn = document.getElementById("create-another-profile-btn");
+		let logoutBtn = document.getElementById("logout-btn");
+		createAnotherProfileBtn.addEventListener("click",switchToRegisterMode,false);
+		logoutBtn.addEventListener("click",onLogout,false);
+
+		createProfileFormEl.addEventListener("submit",onCreateProfile,false);
+		loginFormEl.addEventListener("submit",onLogin,false);
+		savedDataFormEl.addEventListener("submit",onSaveData,false);
+	}
 
 	authWorker = new Worker("/js/auth-worker.js");
 	authWorker.addEventListener("message",onAuthMessage,false);
 
-	var [ profiles, accounts, ] = await Promise.all([
-		getProfiles(),
-		getAccounts(),
-	]);
-	populateProfileSelector(profiles);
+	loadProfiles: {
+		let profiles = await getProfiles();
+		populateProfileSelector(profiles);
+	}
 
 	// no registered login(s) yet?
 	if (profileNameSelectorEl.options.length == 0) {
@@ -116,14 +118,18 @@ function populateProfileSelector(profiles) {
 }
 
 async function populateSavedData() {
-	var accounts = await getAccounts();
-	var accountID = sessionStorage.getItem("current-account-id");
-	var account = accounts[accountID];
-	profileLabelEl.innerText = account.profileName;
+	setProfileName: {
+		let accounts = await getAccounts();
+		let accountID = sessionStorage.getItem("current-account-id");
+		let account = accounts[accountID];
+		profileLabelEl.innerText = account.profileName;
+	}
 
-	let textareaEl = savedDataFormEl.querySelector("#saved-text");
-	let data = await DataManager.getData();
-	textareaEl.value = (data != null) ? data : "";
+	setSavedData: {
+		let textareaEl = savedDataFormEl.querySelector("#saved-text");
+		let data = await DataManager.getData();
+		textareaEl.value = (data != null) ? data : "";
+	}
 }
 
 async function onCreateProfile(evt) {
