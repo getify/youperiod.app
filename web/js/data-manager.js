@@ -1,6 +1,6 @@
 import * as idbKeyval from "/js/external/idb-keyval.js";
 
-export { getData, saveData };
+export { getData, saveData, };
 
 const b64AB = window["base64-arraybuffer"];
 const aesDefaultOptions = {
@@ -10,10 +10,10 @@ const aesDefaultOptions = {
 
 // ****************************
 
-async function getData() {
+async function getData(accountID,keyText) {
 	try {
-		let accountID = sessionStorage.getItem("current-account-id");
-		let keyText = sessionStorage.getItem("current-key-text");
+		accountID = accountID || sessionStorage.getItem("current-account-id");
+		keyText = keyText || sessionStorage.getItem("current-key-text");
 		let accounts = await idbKeyval.get("accounts");
 		let account = accounts[accountID];
 
@@ -32,10 +32,10 @@ async function getData() {
 	}
 }
 
-async function saveData(data) {
+async function saveData(data,accountID,keyText,upgradeComplete = false) {
 	try {
-		let accountID = sessionStorage.getItem("current-account-id");
-		let keyText = sessionStorage.getItem("current-key-text");
+		accountID = accountID || sessionStorage.getItem("current-account-id");
+		keyText = keyText || sessionStorage.getItem("current-key-text");
 		let accounts = await idbKeyval.get("accounts");
 		let account = accounts[accountID];
 
@@ -48,6 +48,13 @@ async function saveData(data) {
 		let aesOptions = Object.assign({},aesDefaultOptions,{ iv, });
 		let encData = await crypto.subtle.encrypt(aesOptions,key,dataBuffer);
 		account.data = b64AB.encode(encData);
+
+		// discard previous auth credentials now that upgrade
+		// is complete?
+		if (upgradeComplete) {
+			delete account.oldLoginChallenge;
+			delete account.oldKeyInfo;
+		}
 
 		await idbKeyval.set("accounts",accounts);
 		return true;

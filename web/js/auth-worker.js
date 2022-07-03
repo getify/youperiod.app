@@ -85,14 +85,27 @@ async function createEncryptionKey(account,password) {
 	return parseArgon2(key);
 }
 
-async function onCreateAuth({ password, accountID, }) {
+async function onCreateAuth({ password, accountID, regenerate = false, }) {
 	try {
 		let account = await getAccount(accountID);
+
+		// save old auth credentials in case we're regenerating
+		let {
+			loginChallenge: oldLoginChallenge,
+			keyInfo: oldKeyInfo,
+		} = account;
+		if (regenerate) {
+			account.loginChallenge = null;
+			account.keyInfo = null;
+		}
+
+		// generate new auth credentials
 		let [ loginChallengeHash, keyInfo, ] = await Promise.all([
 			createLoginChallenge(account,password),
 			createEncryptionKey(account,password),
 		]);
 
+		// store new auth credentials in account
 		await setAccount(accountID,Object.assign(account,{
 			loginChallenge: loginChallengeHash,
 			keyInfo: {
@@ -101,12 +114,18 @@ async function onCreateAuth({ password, accountID, }) {
 				salt: keyInfo.salt,
 				version: keyInfo.version,
 			},
+
+			// preserve old credentials temporarily just in case
+			// upgrade of data encryption doesn't complete
+			...(regenerate ? { oldLoginChallenge, oldKeyInfo, } : {}),
 		}));
 
+		// notify page of new credentials
 		self.postMessage({
 			login: true,
 			keyText: keyInfo.hash,
 			accountID,
+			...(regenerate ? { authRegenerated: true, } : {})
 		});
 	}
 	catch (err) {
@@ -121,6 +140,19 @@ async function onCreateAuth({ password, accountID, }) {
 async function onCheckAuth({ password, accountID, }) {
 	try {
 		let account = await getAccount(accountID);
+
+		// did a previous credentials upgrade fail
+		// to complete for some reason?
+		if (account.oldLoginChallenge && account.oldKeyInfo) {
+			// roll-back previous upgrade
+			// note: reattempt upgrade below
+			account.loginChallenge = account.oldLoginChallenge;
+			account.keyInfo = account.oldKeyInfo;
+			delete account.oldLoginChallenge;
+			delete account.oldKeyInfo;
+			await setAccount(accountID,account);
+		}
+
 		let [
 			loginAttemptHash,
 			keyInfo,
@@ -129,12 +161,32 @@ async function onCheckAuth({ password, accountID, }) {
 			createEncryptionKey(account,password),
 		]);
 
+		// did the login match?
 		if (account.loginChallenge === loginAttemptHash) {
-			self.postMessage({
-				login: true,
-				keyText: keyInfo.hash,
-				accountID,
-			});
+			// any crypto params have changed?
+			if (
+				argonDefaultOptions.iterations !== keyInfo.params.t ||
+				argonDefaultOptions.parallelism !== keyInfo.params.p ||
+				argonDefaultOptions.memorySize !== keyInfo.params.m
+			) {
+				// send login message for old auth info
+				// allowing data to be extracted
+				self.postMessage({
+					login: true,
+					keyText: keyInfo.hash,
+					accountID,
+					password,
+					upgradePending: true,
+				});
+			}
+			else {
+				self.postMessage({
+					login: true,
+					keyText: keyInfo.hash,
+					accountID,
+				});
+			}
+
 			return;
 		}
 	}

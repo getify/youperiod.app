@@ -7,6 +7,7 @@ var savedDataFormEl;
 var profileNameSelectorEl;
 var profileLabelEl;
 var authWorker;
+var tmpDataBackup;
 
 document.addEventListener("DOMContentLoaded",() => main().catch(console.log),false);
 
@@ -216,7 +217,10 @@ async function onSaveData(evt) {
 		submitBtn.disabled = true;
 		let textareaEl = savedDataFormEl.querySelector("#saved-text");
 		try {
-			await DataManager.saveData(textareaEl.value);
+			let res = await DataManager.saveData(textareaEl.value);
+			if (!res) {
+				console.log("Saving data failed. Please try again.");
+			}
 		}
 		catch (err) {
 			console.log(err);
@@ -241,9 +245,53 @@ function hideLogin() {
 
 async function onAuthMessage({ data }) {
 	if (data.login === true) {
-		// need to save key text into session?
+		// upgrade of auth credentials pending?
+		if (data.upgradePending) {
+			// decrypt/extract current data
+			tmpDataBackup = await DataManager.getData(
+				data.accountID,
+				data.keyText,
+			);
+
+			// trigger regeneration of new auth credentials
+			authWorker.postMessage({
+				createAuth: {
+					password: data.password,
+					accountID: data.accountID,
+					regenerate: true,
+				},
+			});
+
+			return;
+		}
+		// auth credentials regenerated?
+		else if (data.authRegenerated && tmpDataBackup) {
+			try {
+				// re-save the data using the upgraded
+				// encryption credentials
+				let res = await DataManager.saveData(
+					tmpDataBackup,
+					data.accountID,
+					data.keyText,
+					/*upgrade=*/true
+				);
+				if (!res) {
+					throw "Saving data (during credentials upgrade) failed. Please try again.";
+				}
+				tmpDataBackup = null;
+			}
+			catch (err) {
+				console.log(err);
+				let submitBtn = loginFormEl.querySelector("button[type=submit]");
+				submitBtn.disabled = false;
+				return;
+			}
+		}
+
+		// need to save credentials into session?
 		sessionStorage.setItem("current-account-id",data.accountID);
 		sessionStorage.setItem("current-key-text",data.keyText);
+
 		hideRegistration();
 		hideLogin();
 		await populateSavedData();
