@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<title>YOU .</title>
+
+<meta name="viewport" content="width=device-width">
+<meta name=”robots” content="index, follow">
+<meta name="author" content="Anonymous">
+<meta itemprop="name" content="You.">
+<meta itemprop="description" content="You. -- The privacy-first period-tracking app">
+<meta itemprop="image" content="https://youperiod.app/images/logo-social-small.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="You.">
+<meta name="twitter:description" content="You. -- The privacy-first period-tracking app">
+<meta name="twitter:image:src" content="https://youperiod.app/images/logo-social-small.png">
+<meta name="title" property="og:title" content="You.">
+<meta name="description" property="og:description" content="You. -- The privacy-first period-tracking app">
+<meta name="image" property="og:image" content="https://youperiod.app/images/logo-social-large.png">
+<meta name="url" property="og:url" content="https://youperiod.app/">
+<meta name="site_name" property="og:site_name" content="You.">
+<meta name="type" property="og:type" content="website">
+
+<link rel="canonical" href="https://youperiod.app/" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="css/style.css">
+<script integrity="sha256-CoCYJ/tTxH9vJyISOUlowiGKF8OokDL5QBuS3H8R1/g=">
+// compute the vw/vh units more reliably than CSS does itself
+if (document.documentElement && document.documentElement.style && document.documentElement.style.setProperty) {
+	let docEl = document.documentElement;
+	let width = Math.max(300,docEl.clientWidth);
+	let height = Math.max(300,docEl.clientHeight);
+	docEl.style.setProperty("--vw-unit",`${(width / 100).toFixed(1)}px`);
+	docEl.style.setProperty("--vh-unit",`${(height / 100).toFixed(1)}px`);
+}
+</script>
+</head>
+<body>
+
+<main>
+
+<h1 id="logo">YOU<i class="bold-period" aria-label="stylized period in red color"></i></h1>
+<h2>The privacy-first period-tracking app</h2>
+
+<p>In development, coming soon.</p>
+
+<hr>
+
+<p>Testing mode only... DO NOT USE YET!</p>
+
+<form id="create-profile" class="hidden">
+	<p>
+		<label for="register-profile-name">Name/describe your local profile with any text you will recognize:</label>
+	</p>
+	<p>
+		<input type="text" id="register-profile-name" size="30" placeholder="set profile name/description" autocomplete="phrase">
+	</p>
+	<p>
+		<label for="register-password">To protect your information on this device, please choose a secret phrase (several words together that uniquely you will remember), separated by spaces, hyphens, punctuation, numbers, etc:</label>
+	</p>
+	<p>
+		<input type="password" id="register-password" size="30" placeholder="set secret phrase" autocomplete="phrase">
+	</p>
+	<p>
+		<input type="password" id="register-password-confirm" size="30" placeholder="confirm secret phrase" autocomplete="phrase">
+	</p>
+	<p>
+		<button type="submit">Create Local Profile</button>
+	</p>
+</form>
+
+<form id="login" class="hidden">
+	<p>
+		Local Profile: <select id="profile-names"></select>
+	</p>
+	<p>
+		<label for="login-password">Secret Phrase:</label>
+		<input type="password" id="login-password" size="30" placeholder="your secret phrase" autocomplete="phrase">
+	</p>
+	<p>
+		<button type="submit">Login Locally</button>
+		<button type="button" id="create-another-profile-btn">Create Another Local Profile</button>
+	</p>
+</form>
+
+<form id="saved-data" class="hidden">
+	<p>
+		<button type="button" id="logout-btn">Logout</button>
+	</p>
+	<p>
+		Profile: <strong><span id="profile-label"></span></strong>
+	</p>
+	<p>
+		Enter anything you'd like to save (secure and private, on this device only):
+	</p>
+	<p>
+		<textarea id="saved-text" cols="60" rows="8"></textarea>
+	</p>
+	<p>
+		<button type="submit">Save</button>
+	</p>
+</form>
+
+</main>
+
+<footer>&copy;2022 YOU<i class="bold-period" aria-label="stylized period in red color"></i></footer>
+
+<script src="js/external/base64-arraybuffer.umd.js"></script>
+<script src="js/util.js"></script>
+<script type="module" src="js/main.js"></script>
+<script type="module" src="js/window-resize.js"></script>
+</body>
+</html>

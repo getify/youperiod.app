@@ -1,0 +1,102 @@
+:root {
+	--vw-unit: 1vw;
+	--vh-unit: 1vh;
+
+	--color-white: 255, 255, 255;		/* #fff */
+	--color-black: 0, 0, 0;				/* #000 */
+	--color-red: 255, 0, 0;				/* #f00 */
+
+	--base-font-size: min(max(var(--vw-unit) * 3, 1.3rem), 2.2rem);
+
+	/* --image-link: url(../images/icon-link.svg); */
+	/* --image-link-dark: url(../images/icon-link-dark.svg); */
+}
+
+html {
+	font-size: var(--base-font-size);
+	color: rgba(var(--color-black));
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+body, input, button, select {
+	font-family: "Segoe UI", sans-serif;
+	font-size: inherit;
+}
+
+#logo {
+	--font-size: calc(var(--base-font-size) * 1.1);
+	--dot-size: calc(var(--font-size) / 2);
+
+	position: relative;
+	font-size: var(--font-size);
+	background-color: transparent;
+	color: rgba(var(--color-white));
+	margin-bottom: 1.2em;
+}
+#logo::before {
+	content: "";
+	display: block;
+	background-color: rgba(var(--color-black));
+	width: 3.5em;
+	height: 3.5em;
+	border-radius: 50%;
+	z-index: -1;
+	position: absolute;
+	top: -1.25em;
+	left: -0.45em;
+}
+
+.bold-period {
+	display: inline-block;
+	margin-left: 0.15em;
+	font-weight: bold;
+	position: relative;
+	top: calc(var(--dot-size) / 10);
+	width: var(--dot-size);
+	height: var(--dot-size);
+	overflow: hidden;
+	font-style: normal;
+}
+.bold-period::after {
+	content: "⬤";
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	font-size: var(--dot-size);
+	line-height: var(--dot-size);
+	color: rgba(var(--color-red));
+}
+
+a, a:visited, a:hover, a:active {
+	background-color: inherit;
+	color: inherit;
+}
+
+main {
+	margin: 0 calc(var(--vw-unit) * 5);
+	line-height: 150%;
+}
+
+#create-profile.hidden,
+#login.hidden,
+#saved-data.hidden {
+	display: none;
+}
+
+footer {
+	--font-size: calc(var(--base-font-size) * 0.6);
+	--dot-size: calc(var(--font-size) / 2);
+
+	position: relative;
+	margin-top: calc(var(--vh-unit) * 5);
+	/*padding: calc(var(--vh-unit) * 1.5) calc(var(--vw-unit) * 3);*/
+	background-color: rgba(var(--color-black));
+	color: rgba(var(--color-white));
+	font-size: var(--font-size);
+	text-align: center;
+}

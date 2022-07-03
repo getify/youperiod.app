@@ -1,0 +1,10 @@
+{
+	"name": "youperiod.app",
+	"version": "0.0.1",
+	"dependencies": {
+		"@getify/node-static-alias": "latest",
+		"base64-arraybuffer": "~1.0.2",
+		"hash-wasm": "~4.9.0",
+		"idb-keyval": "~6.2.0"
+	}
+}
