@@ -11,6 +11,9 @@ var httpServer = http.createServer(handleRequest);
 
 var nodeStaticAlias = require("@getify/node-static-alias");
 
+var AccessControlHeader = {
+	"Access-Control-Allow-Origin": "https://youperiod.app",
+};
 var HSTSHeader = {
 	"Strict-Transport-Security": `max-age=${ 1E9 }`,
 };
@@ -35,6 +38,10 @@ var CSPHeader = {
 				// inline <script> tag for re-computing the vw/vh units
 				"'sha256-CoCYJ/tTxH9vJyISOUlowiGKF8OokDL5QBuS3H8R1/g='",
 			].join(" ")};`,
+
+			`connect-src ${[
+				"'none'",
+			].join(" ")};`
 		].join(" ")
 };
 
@@ -47,6 +54,7 @@ var staticServer = new nodeStaticAlias.Server(STATIC_DIR,{
 	cache: CACHE_FILES ? (60 * 60 * 3) : 0,
 	gzip: /^(?:(?:text\/.+)|(?:image\/svg\+xml)|(?:application\/javascript)|(?:application\/json)|(?:application\/manifest\+json))(?:; charset=utf-8)?$/,
 	headers: {
+		...AccessControlHeader,
 		...(!DEV ? HSTSHeader : {}),
 	},
 	onContentType(contentType,headers) {
