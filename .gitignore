@@ -6,3 +6,9 @@ Thumbs.db
 
 # JetBranin editor's settings
 .idea
+
+# yarn
+yarn-debug.log
+yarn-error.log
+yarn.lock
+
