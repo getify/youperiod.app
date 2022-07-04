@@ -94,6 +94,7 @@ var staticServer = new nodeStaticAlias.Server(STATIC_DIR,{
 
 httpServer.listen(8034);
 
+console.log("The app is running on http://localhost:8034");
 
 // *************************************
 
