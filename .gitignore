@@ -3,3 +3,6 @@ node_modules/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# JetBranin editor's settings
+.idea
