@@ -1,6 +1,9 @@
 {
 	"name": "youperiod.app",
 	"version": "0.0.1",
+	"scripts": {
+		"start": "node server.js"
+	},
 	"dependencies": {
 		"@getify/node-static-alias": "latest",
 		"base64-arraybuffer": "~1.0.2",
