@@ -49,7 +49,7 @@ All code for this app (both client and static-file-server) is open-source ([MIT 
 If you'd like to run this app (including the static file server that applies proper security headers, etc), clone this repository then start the server from the project root:
 
 ```cmd
-node server.js
+npm start
 ```
 
 By default, the server will run on `localhost` at port `8034`, and thus the app will be available in your browser via `http://localhost:8034`.
