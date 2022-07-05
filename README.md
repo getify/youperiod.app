@@ -1,15 +1,25 @@
-# YouPeriod.app
+<p>
+  <h1 align="center"><b>YouPeriod.app</b></h1>
+</p>
 
-[![License](https://img.shields.io/badge/license-MIT-a1356a)](LICENSE.txt)
+<p>
+<h4 align="center"> The privacy-first period-tracking app.</h4>
+</p>
+  
 
-**You.** The privacy-first period-tracking app.
+<p align="center">
+    <img src="https://img.shields.io/github/stars/getify/youperiod.app" />
+    &nbsp;
+    <img src="https://img.shields.io/github/forks/getify/youperiod.app" />&nbsp;
+    <img src="https://img.shields.io/github/repo-size/getify/youperiod.app"/>
+    &nbsp;
+   <a href="LICENSE.txt"> <img src="https://img.shields.io/badge/license-MIT-a1356a"/></a>
+</p>
 
 ----
-----
 
-**IMPORTANT:** This app is still being developed. It's not ready for use yet, but will be soon. Please check back.
+**IMPORTANT: _This app is still being developed. It's not ready for use yet, but will be soon. Please check back._**
 
-----
 ----
 
 ## Privacy First
@@ -24,13 +34,13 @@ Once installed, this web-app (PWA) runs entirely offline -- only locally on your
 
 That means that even if the server were to be taken down, your local install of this app will remain functional on your device, with your data safe and secure, for as long as *you* decide.
 
-## To Install This App
+## How To Install
 
 This web-app is an installable PWA (progressive web app), meaning you install it via your device's web browser.
 
 This is important, because it means that even if device app stores (like Apple's App Store or Google's Google Play Store) refuse to allow this app, or governments force them to block it, as long as you have an open internet connection, you can always install this application free of any governmental control.
 
-1. Visit https://YouPeriod.app in a browser on your device.
+1. Visit `https://YouPeriod.app` in a browser on your device.
 
     - For iOS devices, Safari browser offers the best installable PWA experience, so that's strongly recommended.
 
@@ -38,17 +48,20 @@ This is important, because it means that even if device app stores (like Apple's
 
 2. For iOS, click the "share" button in Safari's bottom toolbar, then scroll to find "Add to homescreen". Follow the prompts to install the app. Once installed, close the Safari tab and use the app from your homescreen / app-drawer.
 
-3. For Android (using Chrome), click the "Install" button in the banner and follow the prompts. Once installed, close the Chrome tab and use the app from your homescreen / app-drawer.
+3. For Android (using Chrome), click the `Install` button in the banner and follow the prompts. Once installed, close the Chrome tab and use the app from your homescreen / app-drawer.
 
-4. For any other device (again, using Chrome), click the settings icon (three dots) near the top address bar, then select the menu option that says "Install YouPeriod".
+4. For any other device (again, using Chrome), click the settings icon (three dots) near the top address bar, then select the menu option that says `Install YouPeriod`.
 
 ## For Developers
 
 All code for this app (both client and static-file-server) is open-source ([MIT License](LICENSE.txt)) and freely available for anyone to inspect, audit, etc.
 
-If you'd like to run this app (including the static file server that applies proper security headers, etc), clone this repository then start the server from the project root:
+If you'd like to run this app (including the static file server that applies proper security headers, etc), clone this repository then install necessary dependencies and start the server from the project root:
 
-```cmd
+```
+git clone https://github.com/getify/youperiod.app.git
+cd youperiod.app
+npm install
 npm start
 ```
 
