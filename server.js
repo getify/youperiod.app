@@ -93,9 +93,9 @@ var staticServer = new nodeStaticAlias.Server(STATIC_DIR,{
 	],
 });
 
-httpServer.listen(PORT);
-
-console.log(`The app is running on http://localhost:${PORT}`);
+httpServer.listen(PORT, () => {
+	console.log(`The app is running on http://localhost:${PORT}`);
+});
 
 // *************************************
 
