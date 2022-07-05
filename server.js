@@ -48,7 +48,7 @@ var CSPHeader = {
 const STATIC_DIR = path.join(__dirname,"web");
 const DEV = true;
 const CACHE_FILES = false;
-const PORT = process.env.YOUPERIOD_PORT || 8034;
+const PORT = process.env.HTTP_SERVER_PORT || 8034;
 
 var staticServer = new nodeStaticAlias.Server(STATIC_DIR,{
 	serverInfo: "YouPeriod",
