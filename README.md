@@ -54,6 +54,12 @@ npm start
 
 By default, the server will run on `localhost` at port `8034`, and thus the app will be available in your browser via `http://localhost:8034`.
 
+## Contributing
+
+PRs for this project are welcome.
+
+If you are looking to contribute to the design, there is an active [Figma project](https://www.figma.com/team_invite/redeem/RGRbYTgALoGkzWFAPiIvKX) in which we test all the visual changes and enhancements prior to being developed. Leave a comment [here](https://github.com/getify/youperiod.app/issues/2) and edit permissions will be granted.
+
 ## License
 
 [![License](https://img.shields.io/badge/license-MIT-a1356a)](LICENSE.txt)
