@@ -102,13 +102,13 @@ Inside `keyval-store` the application store key/value objects.
 
 After local profile creation you are logged in and you can start using the application.<br>
 Now you can save your personal data by writing inside the text area and clicking save button and of course you can log out when you prefer.<br>
-When you save your data the application encript the text area value and store it inside your IndexedDB account in the `data` section<br><br>
+When you save your data the application encrypt the text area value and store it inside your IndexedDB account in the `data` section<br><br>
 e.g.<br>
 
 ```json {
 {
     "e6c1005d-4efd-4450-ba96-ffbdbd1d6efa": {
-        "data": "<encripted_text_area_value>",
+        "data": "<encrypted_text_area_value>",
         "profileName": "test",
         ...
         ...
@@ -116,19 +116,15 @@ e.g.<br>
 }
 ```
 
-### Encription logic - WIP
+### Js file structure
 
-```
-let iv = new Uint8Array(16);
-self.crypto.getRandomValues(iv);
-account.dataIV = b64AB.encode(iv);
-let keyBuffer = b64AB.decode(keyText);
-let key = await crypto.subtle.importKey("raw",keyBuffer,"AES-GCM",false,[ "encrypt", ]);
-let dataBuffer = (new TextEncoder()).encode(data);
-let aesOptions = Object.assign({},aesDefaultOptions,{ iv, });
-let encData = await crypto.subtle.encrypt(aesOptions,key,dataBuffer);
-account.data = b64AB.encode(encData);
-```
+-   **main** the entry point file. In this file we attach event listeners and we manipulate the dom. In this file we create also the web worker `new Worker("/js/auth-worker.js");`
+-   **auth-worker** this is a the Web Worker file and create/check the auth into IndexedDB database
+-   **data-manager** this file manage user encrypted data and expose _get_ and _set_ functions
+-   **utils** some utils functions
+-   **window-resize** in this file we change the application style every time the viewport size change
+
+In **js/external** folder there is `idb-keyval` for manage IndexedDB part and `argon2.umd.min` + `base64-arraybuffer.umd` for the encryption logic
 
 ## Contributing
 
