@@ -64,6 +64,14 @@ cd youperiod.app
 npm install
 npm start
 ```
+you can also use `yarn` instead of `npm`.
+
+```
+git clone https://github.com/getify/youperiod.app.git
+cd youperiod.app
+yarn install
+yarn start
+```
 
 By default, the server will run on `localhost` at port `8034`, and thus the app will be available in your browser via `http://localhost:8034`.
 
