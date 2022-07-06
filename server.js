@@ -48,6 +48,7 @@ var CSPHeader = {
 const STATIC_DIR = path.join(__dirname,"web");
 const DEV = true;
 const CACHE_FILES = false;
+const PORT = process.env.HTTP_SERVER_PORT || 8034;
 
 var staticServer = new nodeStaticAlias.Server(STATIC_DIR,{
 	serverInfo: "YouPeriod",
@@ -92,8 +93,9 @@ var staticServer = new nodeStaticAlias.Server(STATIC_DIR,{
 	],
 });
 
-httpServer.listen(8034);
-
+httpServer.listen(PORT, () => {
+	console.log(`The app is running on http://localhost:${PORT}`);
+});
 
 // *************************************
 
