@@ -4,25 +4,27 @@
 
 **You.** The privacy-first period-tracking app.
 
-----
-----
+---
+
+---
 
 **IMPORTANT:** This app is still being developed. It's not ready for use yet, but will be soon. Please check back.
 
-----
-----
+---
+
+---
 
 ## Privacy First
 
-We believe this kind of private and sensitive medical information belongs to *you*, and *you* alone. As such, **You.** (the app) puts *you* in control of all your information, and never collects or tracks anything about *you*, not even your name or email address. Since ***we don't have any of your data***, we obviously ***CANNOT*** sell it or hand it over to any governmental authority.
+We believe this kind of private and sensitive medical information belongs to _you_, and _you_ alone. As such, **You.** (the app) puts _you_ in control of all your information, and never collects or tracks anything about _you_, not even your name or email address. Since **_we don't have any of your data_**, we obviously **_CANNOT_** sell it or hand it over to any governmental authority.
 
-Everything *you* enter into **You.** (the app) is yours, and always and only yours. It stays on your device, protected and secure, and *you* decide what to do with that information.
+Everything _you_ enter into **You.** (the app) is yours, and always and only yours. It stays on your device, protected and secure, and _you_ decide what to do with that information.
 
 This app is free to use, and will remain so forever.
 
-Once installed, this web-app (PWA) runs entirely offline -- only locally on your device, with no need for any internet or to connect to any remote service -- and uses strong cryptography practices to keep your data secure and private on your device, ***ONLY***.
+Once installed, this web-app (PWA) runs entirely offline -- only locally on your device, with no need for any internet or to connect to any remote service -- and uses strong cryptography practices to keep your data secure and private on your device, **_ONLY_**.
 
-That means that even if the server were to be taken down, your local install of this app will remain functional on your device, with your data safe and secure, for as long as *you* decide.
+That means that even if the server were to be taken down, your local install of this app will remain functional on your device, with your data safe and secure, for as long as _you_ decide.
 
 ## To Install This App
 
