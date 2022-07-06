@@ -1,1 +1,4 @@
 web/js/external
+*.md
+*.txt
+*.yml
