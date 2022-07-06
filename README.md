@@ -1,29 +1,15 @@
-<p>
-  <h1 align="center"><b>YouPeriod.app</b></h1>
-</p>
+# YouPeriod.app
 
-<p>
-<h4 align="center"> The privacy-first period-tracking app.</h4>
-</p>
-  
+## The privacy-first period-tracking app.
 
-<p align="center">
-    <img src="https://img.shields.io/github/stars/getify/youperiod.app" />
-    &nbsp;
-    <img src="https://img.shields.io/github/forks/getify/youperiod.app" />&nbsp;
-    <img src="https://img.shields.io/github/repo-size/getify/youperiod.app"/>
-    &nbsp;
-   <a href="LICENSE.txt"> <img src="https://img.shields.io/badge/license-MIT-a1356a"/></a>
-</p>
+![Stars](https://img.shields.io/github/stars/getify/youperiod.app) ![Forks](https://img.shields.io/github/forks/getify/youperiod.app) ![Repo Size](https://img.shields.io/github/repo-size/getify/youperiod.app) [![MIT License](https://img.shields.io/badge/license-MIT-a1356a)](LICENSE.txt)
 
 ---
-
 ---
 
 **IMPORTANT: _This app is still being developed. It's not ready for use yet, but will be soon. Please check back._**
 
 ---
-
 ---
 
 ## Privacy First
@@ -60,29 +46,11 @@ This is important, because it means that even if device app stores (like Apple's
 
 All code for this app (both client and static-file-server) is open-source ([MIT License](LICENSE.txt)) and freely available for anyone to inspect, audit, etc.
 
-If you'd like to run this app (including the static file server that applies proper security headers, etc), clone this repository then install necessary dependencies and start the server from the project root:
-
-```
-git clone https://github.com/getify/youperiod.app.git
-cd youperiod.app
-npm install
-npm start
-```
-you can also use `yarn` instead of `npm`.
-
-```
-git clone https://github.com/getify/youperiod.app.git
-cd youperiod.app
-yarn install
-yarn start
-```
-
-By default, the server will run on `localhost` at port `8034`, and thus the app will be available in your browser via `http://localhost:8034`.
-However, you have the ability to control the port through the environment variable `HTTP_SERVER_PORT`.
+If you would like more details about the technical architecture of the app (client or server), please check out the [tech documentation](SPECS.md).
 
 ## Contributing
 
-PRs for this project are welcome.
+PRs for this project are welcome. Please check the open issues and discussions before filing new issues or PRs.
 
 If you are looking to contribute to the design, there is an active [Figma project](https://www.figma.com/team_invite/redeem/RGRbYTgALoGkzWFAPiIvKX) in which we test all the visual changes and enhancements prior to being developed. Leave a comment [here](https://github.com/getify/youperiod.app/issues/2) and edit permissions will be granted.
 
