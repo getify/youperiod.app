@@ -1,1 +1,7 @@
-{}
+{
+	"trailingComma": "es5",
+	"semi": true,
+	"singleQuote": false,
+	"no-bracket-spacing": false,
+	"arrow-parens": "avoid"
+}
