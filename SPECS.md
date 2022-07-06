@@ -6,7 +6,7 @@ This application is written with HTML + CSS + JS and under the hood use NodeJs h
 When the end user hit the homepage there are some information to fill
 
 -   profile name/description - _at least 2 letters long_
--   secret phrase (with confirmation check) - _at least 12 letters long_
+-   secret phrase (with confirmation check) - _at least 12 characters long_
 
 with these info the application will create an unique local profile into IndexedDB database called `keyval-store`.<br>
 

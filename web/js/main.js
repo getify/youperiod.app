@@ -150,7 +150,7 @@ async function onCreateProfile(evt) {
 			return false;
 		}
 		if (passphraseEl.value.length < 12) {
-			alert("Please enter a passphrase at least 12 letters long.");
+			alert("Please enter a passphrase at least 12 characters long.");
 			return false;
 		}
 		if (passphraseEl.value !== confirmPassphraseEl.value) {
