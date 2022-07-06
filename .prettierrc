@@ -2,6 +2,6 @@
 	"trailingComma": "none",
 	"semi": true,
 	"singleQuote": false,
-	"no-bracket-spacing": false,
-	"arrow-parens": "avoid"
+	"bracketSpacing": true,
+	"arrowParens": "avoid"
 }
