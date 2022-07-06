@@ -74,6 +74,7 @@ yarn start
 ```
 
 By default, the server will run on `localhost` at port `8034`, and thus the app will be available in your browser via `http://localhost:8034`.
+However, you have the ability to control the port through the environment variable `HTTP_SERVER_PORT`.
 
 ## Contributing
 
