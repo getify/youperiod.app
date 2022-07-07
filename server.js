@@ -59,7 +59,7 @@ var staticServer = new nodeStaticAlias.Server(STATIC_DIR,{
 		...(!DEV ? HSTSHeader : {}),
 	},
 	onContentType(contentType,headers) {
-		// apparently this is the new preferred mime-type for JS
+		// apparently this is the new preferred MIME-type for JS
 		if (contentType == "application/javascript") {
 			contentType = "text/javascript";
 		}
