@@ -2,19 +2,21 @@
 	--vw-unit: 1vw;
 	--vh-unit: 1vh;
 
-	--color-white: 255, 255, 255;		/* #fff */
-	--color-black: 0, 0, 0;				/* #000 */
-	--color-red: 255, 0, 0;				/* #f00 */
-
-	--base-font-size: min(max(var(--vw-unit) * 3, 1.3rem), 2.2rem);
-
-	/* --image-link: url(../images/icon-link.svg); */
-	/* --image-link-dark: url(../images/icon-link-dark.svg); */
+	--color-white: 255, 255, 255;			/* #fff */
+	--color-black: 0, 0, 0;					/* #000 */
+	--color-gray-1: 240, 240, 240;			/* #f0f0f0 */
+	--color-gray-2: 51, 51, 51;				/* #333 */
+	--color-red-1: 255, 0, 0;				/* #f00 */
+	--color-red-2: 255, 179, 173;			/* #ffb3ad */
+	--color-yellow: 255, 241, 43;			/* #fff12b */
 }
 
 html {
-	font-size: var(--base-font-size);
-	color: rgba(var(--color-black));
+	--base-text-color: rgba(var(--color-black));
+	--base-text-size: min(max(var(--vw-unit) * 3, 1.3rem), 2.2rem);
+
+	font-size: var(--base-text-size);
+	color: var(--base-text-color);
 }
 
 body {
@@ -27,20 +29,30 @@ body, input, button, select {
 	font-size: inherit;
 }
 
+button {
+	cursor: pointer;
+}
+
+main[inert], main[inert] * {
+	cursor: not-allowed;
+}
+
 #logo {
-	--font-size: calc(var(--base-font-size) * 1.1);
+	--font-size: calc(var(--base-text-size) * 1.1);
 	--dot-size: calc(var(--font-size) / 2);
+	--color-logo-text: rgba(var(--color-white));
+	--color-logo-background: rgba(var(--color-black));
 
 	position: relative;
 	font-size: var(--font-size);
 	background-color: transparent;
-	color: rgba(var(--color-white));
+	color: var(--color-logo-text);
 	margin-bottom: 1.2em;
 }
 #logo::before {
 	content: "";
 	display: block;
-	background-color: rgba(var(--color-black));
+	background-color: var(--color-logo-background);
 	width: 3.5em;
 	height: 3.5em;
 	border-radius: 50%;
@@ -49,8 +61,9 @@ body, input, button, select {
 	top: -1.25em;
 	left: -0.45em;
 }
-
 .bold-period {
+	--color-logo-period: rgba(var(--color-red-1));
+
 	display: inline-block;
 	margin-left: 0.15em;
 	font-weight: bold;
@@ -69,7 +82,7 @@ body, input, button, select {
 	top: 0;
 	font-size: var(--dot-size);
 	line-height: var(--dot-size);
-	color: rgba(var(--color-red));
+	color: var(--color-logo-period);
 }
 
 a, a:visited, a:hover, a:active {
@@ -89,14 +102,60 @@ main {
 }
 
 footer {
-	--font-size: calc(var(--base-font-size) * 0.6);
+	--font-size: calc(var(--base-text-size) * 0.6);
 	--dot-size: calc(var(--font-size) / 2);
+	--color-footer-text: rgba(var(--color-white));
+	--color-footer-background: rgba(var(--color-black));
 
 	position: relative;
 	margin-top: calc(var(--vh-unit) * 5);
-	/*padding: calc(var(--vh-unit) * 1.5) calc(var(--vw-unit) * 3);*/
-	background-color: rgba(var(--color-black));
-	color: rgba(var(--color-white));
+	background-color: var(--color-footer-background);
+	color: var(--color-footer-text);
 	font-size: var(--font-size);
 	text-align: center;
+}
+
+#notification-banner {
+	--color-notification-text: rgba(var(--color-gray-1));
+	--color-notification-background: rgba(var(--color-gray-2));
+
+	display: block;
+	position: fixed;
+	top: var(--vh-unit);
+	left: 50%;
+	transform: translateX(-50%);
+	min-width: 60%;
+	max-width: 90%;
+	z-index: 100;
+	padding: calc(var(--vh-unit) * 2) calc(var(--vw-unit) * 3);
+	border-radius: calc(var(--vw-unit) * 1.3);
+	font-size: calc(var(--base-text-size) * 1.1);
+	background-color: var(--color-notification-background);
+	color: var(--color-notification-text);
+}
+#notification-banner.hidden {
+	display: none;
+}
+#notification-banner.error {
+	--color-notification-text: rgba(var(--color-black));
+	--color-notification-background: rgba(var(--color-red-2));
+}
+#notification-banner button {
+	--color-button-highlight: rgba(var(--color-yellow));
+
+	/* intentionally swap background and text colors */
+	background-color: var(--color-notification-text);
+	color: var(--color-notification-background);
+
+	display: block;
+	margin: calc(var(--vh-unit) * 2) auto;
+}
+#notification-banner.error button {
+	--color-button-highlight: rgba(var(--color-white));
+}
+#notification-banner button:focus {
+	filter: drop-shadow(0 0 calc(var(--vh-unit) * 1.3) var(--color-button-highlight));
+}
+#notification-banner button.hidden {
+	display: none;
 }

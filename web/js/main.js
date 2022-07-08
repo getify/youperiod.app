@@ -1,6 +1,8 @@
 import * as idbKeyval from "/js/external/idb-keyval.js";
 import * as DataManager from "/js/data-manager.js";
+import * as NotificationManager from "/js/notification-manager.js";
 
+var mainEl;
 var createProfileFormEl;
 var loginFormEl;
 var savedDataFormEl;
@@ -15,11 +17,14 @@ document.addEventListener("DOMContentLoaded",() => main().catch(console.log),fal
 // ****************************
 
 async function main() {
+	mainEl = document.querySelector("main");
 	createProfileFormEl = document.getElementById("create-profile");
 	loginFormEl = document.getElementById("login");
 	savedDataFormEl = document.getElementById("saved-data");
 	profileNameSelectorEl = document.getElementById("profile-names");
 	profileLabelEl = document.getElementById("profile-label");
+
+	NotificationManager.init(mainEl);
 
 	buttonEventHandlers: {
 		let createAnotherProfileBtn = document.getElementById("create-another-profile-btn");
@@ -146,21 +151,21 @@ async function onCreateProfile(evt) {
 		let passphraseEl = createProfileFormEl.querySelector("#register-password");
 		let confirmPassphraseEl = createProfileFormEl.querySelector("#register-password-confirm");
 		if (profileNameEl.value.length < 2) {
-			alert("Please enter a profile name/description at least 2 letters long.");
+			warn("Please enter a profile name/description at least 2 characters long.");
 			return false;
 		}
 		if (passphraseEl.value.length < 12) {
-			alert("Please enter a passphrase at least 12 letters long.");
+			warn("Please enter a passphrase at least 12 characters long.");
 			return false;
 		}
 		if (passphraseEl.value !== confirmPassphraseEl.value) {
-			alert("Please make sure you enter the exact same passphrase twice.");
+			warn("Please make sure you enter the exact same passphrase twice.");
 			return false;
 		}
 
 		let accountID = self.crypto.randomUUID();
 		if (!(await addProfileAccount(profileNameEl.value,accountID))) {
-			alert("Could not add a profile with the given name/description.");
+			warn("Could not add a profile with the given name/description.");
 			return false;
 		}
 
@@ -185,10 +190,17 @@ async function onLogin(evt) {
 	)) {
 		let accountID = profileNameSelectorEl.value;
 		let passphraseEl = loginFormEl.querySelector("#login-password");
+		let password = passphraseEl.value.trim();
+
+		if (password.length < 12) {
+			warn("Please login with a passphrase at least 12 characters long.");
+			return false;
+		}
+
 		submitBtn.disabled = true;
 		authWorker.postMessage({
 			checkAuth: {
-				password: passphraseEl.value.trim(),
+				password,
 				accountID,
 			},
 		});
@@ -197,6 +209,7 @@ async function onLogin(evt) {
 
 async function onLogout(evt) {
 	cancelEvent(evt);
+	NotificationManager.hide();
 	createProfileFormEl.reset();
 	loginFormEl.reset();
 	savedDataFormEl.reset();
@@ -218,13 +231,18 @@ async function onSaveData(evt) {
 		let textareaEl = savedDataFormEl.querySelector("#saved-text");
 		try {
 			let res = await DataManager.saveData(textareaEl.value);
+			if (res) {
+				notify("Data saved (encrypted) successfully.");
+			}
 			if (!res) {
-				console.log("Saving data failed. Please try again.");
+				throw res;
 			}
 		}
 		catch (err) {
 			console.log(err);
+			warn("Saving data failed. Please try again.");
 		}
+
 		submitBtn.disabled = false;
 	}
 }
@@ -242,6 +260,16 @@ function hideLogin() {
 	var submitBtn = loginFormEl.querySelector("button[type=submit]");
 	submitBtn.disabled = false;
 }
+
+function notify(msg,isModal = false) {
+	NotificationManager.show(msg,isModal,/*isError=*/false);
+}
+
+function warn(msg,isModal = true) {
+	NotificationManager.show(msg,isModal,/*isError=*/true);
+}
+
+// *******************************
 
 async function onAuthMessage({ data }) {
 	if (data.login === true) {
@@ -262,6 +290,7 @@ async function onAuthMessage({ data }) {
 				},
 			});
 
+			notify("Upgrading data encryption, please wait...");
 			return;
 		}
 		// auth credentials regenerated?
@@ -276,12 +305,14 @@ async function onAuthMessage({ data }) {
 					/*upgrade=*/true
 				);
 				if (!res) {
-					throw "Saving data (during credentials upgrade) failed. Please try again.";
+					throw "Save failed.";
 				}
 				tmpDataBackup = null;
 			}
 			catch (err) {
 				console.log(err);
+				warn("Re-saving data (during credentials upgrade) failed. Please try again.");
+
 				let submitBtn = loginFormEl.querySelector("button[type=submit]");
 				submitBtn.disabled = false;
 				return;
@@ -292,16 +323,32 @@ async function onAuthMessage({ data }) {
 		sessionStorage.setItem("current-account-id",data.accountID);
 		sessionStorage.setItem("current-key-text",data.keyText);
 
+		NotificationManager.hide();
 		hideRegistration();
 		hideLogin();
 		await populateSavedData();
 		savedDataFormEl.classList.remove("hidden");
+
+		if (data.credentialsCreated) {
+			notify(
+				"Local profile created successfully, you're now logged in!",
+				/*isModal=*/true
+			);
+		}
 	}
 	else if (data.error) {
 		let submitBtns = document.querySelectorAll("form button[type=submit]");
 		for (let btn of submitBtns) {
 			btn.disabled = false;
 		}
+
+		// is the login form active?
+		if (!loginFormEl.classList.contains("hidden")) {
+			let passphraseEl = loginFormEl.querySelector("#login-password");
+			passphraseEl.value = "";
+		}
+
 		console.log(data.error);
+		warn(data.error);
 	}
 }

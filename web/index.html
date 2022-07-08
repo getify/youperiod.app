@@ -42,11 +42,9 @@ if (document.documentElement && document.documentElement.style && document.docum
 <h1 id="logo">YOU<i class="bold-period" aria-label="stylized period in red color"></i></h1>
 <h2>The privacy-first period-tracking app</h2>
 
-<p>In development, coming soon.</p>
-
 <hr>
 
-<p>Testing mode only... DO NOT USE YET!</p>
+<p>Development/testing mode... DO NOT ACTUALLY USE YET!</p>
 
 <form id="create-profile" class="hidden">
 	<p>
@@ -91,7 +89,7 @@ if (document.documentElement && document.documentElement.style && document.docum
 		Profile: <strong><span id="profile-label"></span></strong>
 	</p>
 	<p>
-		Enter anything you'd like to save (secure and private, on this device only):
+		<label for="saved-text">Enter anything you'd like to save (secure and private, on this device only):</label>
 	</p>
 	<p>
 		<textarea id="saved-text" cols="60" rows="8"></textarea>
@@ -104,6 +102,11 @@ if (document.documentElement && document.documentElement.style && document.docum
 </main>
 
 <footer>&copy;2022 YOU<i class="bold-period" aria-label="stylized period in red color"></i></footer>
+
+<div id="notification-banner" class="hidden"><form>
+	<div class="msg" aria-live="off" aria-atomic="true"></div>
+	<button type="submit">OK</button>
+</form></div>
 
 <script src="js/external/base64-arraybuffer.umd.js"></script>
 <script src="js/util.js"></script>

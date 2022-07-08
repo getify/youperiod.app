@@ -123,6 +123,7 @@ async function onCreateAuth({ password, accountID, regenerate = false, }) {
 		// notify page of new credentials
 		self.postMessage({
 			login: true,
+			credentialsCreated: (!regenerate),
 			keyText: keyInfo.hash,
 			accountID,
 			...(regenerate ? { authRegenerated: true, } : {})
