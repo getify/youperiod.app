@@ -5,8 +5,10 @@ var mainEl;
 var bannerEl;
 var formEl;
 var msgEl;
-var btnEl;
+var cancelBtnEl;
+var okBtnEl;
 var autoDismissTimer;
+var closeCallback;
 
 
 // ****************************
@@ -16,15 +18,19 @@ function init(mainDOMElement) {
 	bannerEl = document.getElementById("notification-banner");
 	formEl = bannerEl.querySelector("form");
 	msgEl = bannerEl.querySelector(".msg");
-	btnEl = bannerEl.querySelector("button[type=submit]");
+	cancelBtnEl = bannerEl.querySelector("button.cancel-btn");
+	okBtnEl = bannerEl.querySelector("button[type=submit]");
 
 	formEl.addEventListener("submit",onFormSubmit,false);
+	cancelBtnEl.addEventListener("click",() => hide(/*result=*/false),false);
 }
 
-function show(msg,isModal = false,isError = false) {
+function show(msg,isModal = false,isError = false,showCancel = false,onClose = () => {}) {
+	closeCallback = onClose;
+
 	// banner already shown?
 	if (!bannerEl.classList.contains("hidden")) {
-		hide();
+		hide(/*result=*/false);
 	}
 
 	if (isError) {
@@ -40,21 +46,35 @@ function show(msg,isModal = false,isError = false) {
 	bannerEl.addEventListener("click",clearAutoDismissTimer,true);
 
 	if (isModal) {
-		btnEl.classList.remove("hidden");
+		okBtnEl.classList.remove("hidden");
+		okBtnEl.focus();
 		mainEl.setAttribute("inert","inert");
 		mainEl.addEventListener("click",cancelEvent,true);
-		mainEl.addEventListener("keydown",cancelEvent,true);
-		btnEl.focus();
 	}
 	else {
-		btnEl.classList.add("hidden");
+		okBtnEl.classList.add("hidden");
 		if (autoDismissTimer) {
 			clearTimeout(autoDismissTimer);
 		}
-		autoDismissTimer = setTimeout(() => dismiss(),AUTO_DISMISS_DELAY);
+		autoDismissTimer = setTimeout(() => hide(/*result=*/false),AUTO_DISMISS_DELAY);
 		document.addEventListener("click",dismiss,true);
+	}
+
+	if (!isModal || showCancel) {
 		document.addEventListener("keydown",keyboardDismiss,true);
 		document.addEventListener("keypress",keyboardDismiss,true);
+	}
+	else {
+		mainEl.addEventListener("keydown",cancelEvent,true);
+	}
+
+	// show the 'cancel' button?
+	if (showCancel) {
+		cancelBtnEl.classList.remove("hidden");
+		cancelBtnEl.focus();
+	}
+	else {
+		cancelBtnEl.classList.add("hidden");
 	}
 }
 
@@ -67,32 +87,32 @@ function clearAutoDismissTimer() {
 
 function keyboardDismiss(evt) {
 	if (evt.key == "Escape") {
-		dismiss(evt);
+		cancelEvent(evt);
+		hide(/*result=*/false);
 	}
 }
 
 function dismiss(evt) {
-	if (
-		!evt ||
-		(
-			bannerEl !== evt.target &&
-			!bannerEl.contains(evt.target)
-		)
-	) {
+	// click event OUTSIDE of banner?
+	if (!(
+		bannerEl === evt.target ||
+		bannerEl.contains(evt.target)
+	)) {
 		if (evt) {
 			cancelEvent(evt);
 		}
-		hide();
+		hide(/*result=*/false);
 	}
 }
 
-function hide() {
+function hide(result = false) {
 	clearAutoDismissTimer();
 
 	if (!bannerEl.classList.contains("hidden")) {
 		msgEl.innerText = "";
 		msgEl.setAttribute("aria-live","off");
-		btnEl.classList.remove("hidden");
+		okBtnEl.classList.remove("hidden");
+		cancelBtnEl.classList.add("hidden");
 		bannerEl.classList.add("hidden");
 		mainEl.removeAttribute("inert");
 		document.removeEventListener("click",dismiss,true);
@@ -100,10 +120,13 @@ function hide() {
 		document.removeEventListener("keypress",keyboardDismiss,true);
 		mainEl.removeEventListener("click",cancelEvent,true);
 		mainEl.removeEventListener("keydown",cancelEvent,true);
+
+		Promise.resolve(result).then(closeCallback);
+		closeCallback = null;
 	}
 }
 
 function onFormSubmit(evt) {
 	cancelEvent(evt);
-	hide();
+	hide(/*result=*/true);
 }

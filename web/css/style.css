@@ -33,8 +33,8 @@ button {
 	cursor: pointer;
 }
 
-main[inert], main[inert] * {
-	cursor: not-allowed;
+main[inert] {
+	opacity: 0.5;
 }
 
 #logo {
@@ -125,11 +125,18 @@ footer {
 	min-width: 60%;
 	max-width: 90%;
 	z-index: 100;
-	padding: calc(var(--vh-unit) * 2) calc(var(--vw-unit) * 3);
+	padding: calc(var(--vh-unit) * 4) calc(var(--vw-unit) * 3);
 	border-radius: calc(var(--vw-unit) * 1.3);
 	font-size: calc(var(--base-text-size) * 1.1);
 	background-color: var(--color-notification-background);
 	color: var(--color-notification-text);
+}
+#notification-banner form {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	flex-basis: content;
+	gap: calc(var(--vh-unit) * 2.5) calc(var(--vw-unit) * 3);
 }
 #notification-banner.hidden {
 	display: none;
@@ -144,9 +151,6 @@ footer {
 	/* intentionally swap background and text colors */
 	background-color: var(--color-notification-text);
 	color: var(--color-notification-background);
-
-	display: block;
-	margin: calc(var(--vh-unit) * 2) auto;
 }
 #notification-banner.error button {
 	--color-button-highlight: rgba(var(--color-white));

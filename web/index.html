@@ -46,6 +46,8 @@ if (document.documentElement && document.documentElement.style && document.docum
 
 <p>Development/testing mode... DO NOT ACTUALLY USE YET!</p>
 
+<hr>
+
 <form id="create-profile" class="hidden" inert>
 	<p>
 		<label for="register-profile-name">Name/describe your local profile with any text you will recognize:</label>
@@ -88,6 +90,7 @@ if (document.documentElement && document.documentElement.style && document.docum
 	</p>
 	<p>
 		Profile: <strong><span id="profile-label"></span></strong>
+		<button type="button" id="delete-profile-btn">Delete Local Profile</button>
 	</p>
 	<p>
 		<label for="saved-text">Enter anything you'd like to save (secure and private, on this device only):</label>
@@ -127,6 +130,7 @@ if (document.documentElement && document.documentElement.style && document.docum
 
 <div id="notification-banner" class="hidden"><form>
 	<div class="msg" aria-live="off" aria-atomic="true"></div>
+	<button type="button" class="cancel-btn" class="hidden">Cancel</button>
 	<button type="submit">OK</button>
 </form></div>
 

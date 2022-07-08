@@ -39,6 +39,9 @@ async function main() {
 		let changePassphraseBtn = document.getElementById("change-passphrase-btn");
 		changePassphraseBtn.addEventListener("click",showChangePassphrasePage,false);
 
+		let deleteProfileBtn = document.getElementById("delete-profile-btn");
+		deleteProfileBtn.addEventListener("click",onStartDeleteProfile,false);
+
 		createProfileFormEl.addEventListener("submit",onCreateProfile,false);
 		loginFormEl.addEventListener("submit",onLogin,false);
 		savedDataFormEl.addEventListener("submit",onSaveData,false);
@@ -100,6 +103,27 @@ async function addProfileAccount(profileName,accountID) {
 		}
 		catch (err) {}
 	}
+	return false;
+}
+
+async function deleteProfile(accountID) {
+	var [ profiles, accounts, ] = await Promise.all([
+		getProfiles(),
+		getAccounts(),
+	]);
+
+	let { profileName, } = accounts[accountID];
+	delete profiles[profileName];
+	delete accounts[accountID];
+
+	try {
+		await Promise.all([
+			idbKeyval.set("profiles",profiles),
+			idbKeyval.set("accounts",accounts),
+		]);
+		return true;
+	}
+	catch (err) {}
 	return false;
 }
 
@@ -169,6 +193,8 @@ async function onCreateProfile(evt) {
 		passphraseEl.value = "";
 		confirmPassphraseEl.value = "";
 
+		notify("Creating profile and credentials, please wait...");
+
 		submitBtn.disabled = true;
 		authWorker.postMessage({
 			createAuth: {
@@ -210,8 +236,10 @@ async function onLogin(evt) {
 	}
 }
 
-async function onLogout(evt) {
-	cancelEvent(evt);
+async function onLogout(evt = false) {
+	if (evt) {
+		cancelEvent(evt);
+	}
 	NotificationManager.hide();
 	createProfileFormEl.reset();
 	loginFormEl.reset();
@@ -293,6 +321,40 @@ function onChangePassphrase(evt) {
 				accountID,
 			},
 		});
+	}
+}
+
+function onStartDeleteProfile(evt) {
+	cancelEvent(evt);
+
+	NotificationManager.show(
+		"Warning: This will PERMANENTLY DELETE ALL your saved data. Continue?",
+		/*isModal=*/true,
+		/*isError=*/false,
+		/*showCancel=*/true,
+		onClose
+	);
+
+
+	// ***************************
+
+	async function onClose(result) {
+		// confirmed profile delete?
+		if (result === true) {
+			let accountID = sessionStorage.getItem("current-account-id");
+			let res = await deleteProfile(accountID);
+			if (res) {
+				onLogout();
+			}
+			else {
+				warn("Deleting the profile FAILED!! Please try again.");
+			}
+		}
+		// canceled the profile deletion
+		else {
+			await delay(250);
+			notify("Phew, glad we didn't accidentally delete your data!");
+		}
 	}
 }
 

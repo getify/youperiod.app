@@ -4,6 +4,10 @@ function cancelEvent(evt) {
 	evt.stopPropagation();
 }
 
+function delay(ms) {
+	return new Promise(r => setTimeout(r,ms));
+}
+
 function parseArgon2(key) {
 	var parts = key.split("$");
 	return {
