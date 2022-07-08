@@ -95,9 +95,7 @@ main {
 	line-height: 150%;
 }
 
-#create-profile.hidden,
-#login.hidden,
-#saved-data.hidden {
+form.hidden {
 	display: none;
 }
 

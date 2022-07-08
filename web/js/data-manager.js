@@ -32,7 +32,7 @@ async function getData(accountID,keyText) {
 	}
 }
 
-async function saveData(data,accountID,keyText,upgradeComplete = false) {
+async function saveData(data,accountID,keyText,resaveWithNewCredentials = false) {
 	try {
 		accountID = accountID || sessionStorage.getItem("current-account-id");
 		keyText = keyText || sessionStorage.getItem("current-key-text");
@@ -49,9 +49,9 @@ async function saveData(data,accountID,keyText,upgradeComplete = false) {
 		let encData = await crypto.subtle.encrypt(aesOptions,key,dataBuffer);
 		account.data = b64AB.encode(encData);
 
-		// discard previous auth credentials now that upgrade
-		// is complete?
-		if (upgradeComplete) {
+		// discard previous auth credentials now that
+		// credentials change/upgrade is complete?
+		if (resaveWithCredentials) {
 			delete account.oldLoginChallenge;
 			delete account.oldKeyInfo;
 		}

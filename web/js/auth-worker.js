@@ -27,6 +27,9 @@ async function onMessage({ data }) {
 	else if (data.checkAuth) {
 		await onCheckAuth(data.checkAuth);
 	}
+	else if (data.changeAuth) {
+		await onChangeAuth(data.changeAuth);
+	}
 }
 
 function getKeyParams(account) {
@@ -85,7 +88,11 @@ async function createEncryptionKey(account,password) {
 	return parseArgon2(key);
 }
 
-async function onCreateAuth({ password, accountID, regenerate = false, }) {
+async function onCreateAuth({
+	password,
+	accountID,
+	regenerate = false,
+}) {
 	try {
 		let account = await getAccount(accountID);
 
@@ -132,9 +139,16 @@ async function onCreateAuth({ password, accountID, regenerate = false, }) {
 	catch (err) {
 		console.log(err);
 
-		self.postMessage({
-			error: "Creating a local profile failed. Please try again.",
-		});
+		if (regenerate) {
+			self.postMessage({
+				error: "Regenerating credentials failed. Please try again.",
+			});
+		}
+		else {
+			self.postMessage({
+				error: "Creating a local profile failed. Please try again.",
+			});
+		}
 	}
 }
 
@@ -142,11 +156,13 @@ async function onCheckAuth({ password, accountID, }) {
 	try {
 		let account = await getAccount(accountID);
 
-		// did a previous credentials upgrade fail
-		// to complete for some reason?
+		// did a previous credentials upgrade/change
+		// fail to complete for some reason?
 		if (account.oldLoginChallenge && account.oldKeyInfo) {
-			// roll-back previous upgrade
-			// note: reattempt upgrade below
+			// roll-back previous upgrade/change
+			//
+			// note: if upgrade is still necessary,
+			// will reattempt below
 			account.loginChallenge = account.oldLoginChallenge;
 			account.keyInfo = account.oldKeyInfo;
 			delete account.oldLoginChallenge;
@@ -197,5 +213,53 @@ async function onCheckAuth({ password, accountID, }) {
 
 	self.postMessage({
 		error: "Login failed. Please try again.",
+	});
+}
+
+async function onChangeAuth({ oldPassword, newPassword, accountID, }) {
+	try {
+		let account = await getAccount(accountID);
+
+		// did a previous credentials upgrade/change
+		// fail to complete for some reason?
+		if (account.oldLoginChallenge && account.oldKeyInfo) {
+			// roll-back previous upgrade/change
+			//
+			// note: if upgrade is still necessary,
+			// will reattempt below
+			account.loginChallenge = account.oldLoginChallenge;
+			account.keyInfo = account.oldKeyInfo;
+			delete account.oldLoginChallenge;
+			delete account.oldKeyInfo;
+			await setAccount(accountID,account);
+		}
+
+		let [
+			loginAttemptHash,
+			keyInfo,
+		] = await Promise.all([
+			createLoginChallenge(account,oldPassword),
+			createEncryptionKey(account,oldPassword),
+		]);
+
+		// did the login match?
+		if (account.loginChallenge === loginAttemptHash) {
+			// send login message for old auth info
+			// allowing data to be extracted
+			self.postMessage({
+				login: true,
+				keyText: keyInfo.hash,
+				accountID,
+				password: newPassword,
+				changePending: true,
+			});
+		}
+	}
+	catch (err) {
+		console.log(err);
+	}
+
+	self.postMessage({
+		error: "Passphrase change failed. Please try again.",
 	});
 }

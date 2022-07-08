@@ -2,14 +2,16 @@ import * as idbKeyval from "/js/external/idb-keyval.js";
 import * as DataManager from "/js/data-manager.js";
 import * as NotificationManager from "/js/notification-manager.js";
 
+const UNSET = Symbol("unset");
 var mainEl;
 var createProfileFormEl;
 var loginFormEl;
 var savedDataFormEl;
+var changePassphraseFormEl;
 var profileNameSelectorEl;
 var profileLabelEl;
 var authWorker;
-var tmpDataBackup;
+var tmpDataBackup = UNSET;
 
 document.addEventListener("DOMContentLoaded",() => main().catch(console.log),false);
 
@@ -21,20 +23,26 @@ async function main() {
 	createProfileFormEl = document.getElementById("create-profile");
 	loginFormEl = document.getElementById("login");
 	savedDataFormEl = document.getElementById("saved-data");
+	changePassphraseFormEl = document.getElementById("change-secure-passphrase");
 	profileNameSelectorEl = document.getElementById("profile-names");
 	profileLabelEl = document.getElementById("profile-label");
 
 	NotificationManager.init(mainEl);
 
-	buttonEventHandlers: {
+	eventHandlers: {
 		let createAnotherProfileBtn = document.getElementById("create-another-profile-btn");
+		createAnotherProfileBtn.addEventListener("click",showRegistrationPage,false);
+
 		let logoutBtn = document.getElementById("logout-btn");
-		createAnotherProfileBtn.addEventListener("click",switchToRegisterMode,false);
 		logoutBtn.addEventListener("click",onLogout,false);
+
+		let changePassphraseBtn = document.getElementById("change-passphrase-btn");
+		changePassphraseBtn.addEventListener("click",showChangePassphrasePage,false);
 
 		createProfileFormEl.addEventListener("submit",onCreateProfile,false);
 		loginFormEl.addEventListener("submit",onLogin,false);
 		savedDataFormEl.addEventListener("submit",onSaveData,false);
+		changePassphraseFormEl.addEventListener("submit",onChangePassphrase,false);
 	}
 
 	authWorker = new Worker("/js/auth-worker.js");
@@ -47,7 +55,7 @@ async function main() {
 
 	// no registered login(s) yet?
 	if (profileNameSelectorEl.options.length == 0) {
-		createProfileFormEl.classList.remove("hidden");
+		showRegistrationPage();
 	}
 	else {
 		let accountID = sessionStorage.getItem("current-account-id");
@@ -55,24 +63,12 @@ async function main() {
 
 		// already logged in?
 		if (accountID && keyText) {
-			await populateSavedData();
-			savedDataFormEl.classList.remove("hidden");
+			await showSavedDataPage();
 		}
 		else {
-			loginFormEl.classList.remove("hidden");
+			showLoginPage();
 		}
 	}
-}
-
-function switchToRegisterMode(evt) {
-	cancelEvent(evt);
-
-	loginFormEl.classList.add("hidden");
-	loginFormEl.reset();
-	savedDataFormEl.classList.add("hidden");
-	savedDataFormEl.reset();
-	createProfileFormEl.reset();
-	createProfileFormEl.classList.remove("hidden");
 }
 
 async function getProfiles() {
@@ -169,10 +165,14 @@ async function onCreateProfile(evt) {
 			return false;
 		}
 
+		let password = passphraseEl.value.trim();
+		passphraseEl.value = "";
+		confirmPassphraseEl.value = "";
+
 		submitBtn.disabled = true;
 		authWorker.postMessage({
 			createAuth: {
-				password: passphraseEl.value.trim(),
+				password,
 				accountID,
 			},
 		});
@@ -191,11 +191,14 @@ async function onLogin(evt) {
 		let accountID = profileNameSelectorEl.value;
 		let passphraseEl = loginFormEl.querySelector("#login-password");
 		let password = passphraseEl.value.trim();
+		passphraseEl.value = "";
 
 		if (password.length < 12) {
 			warn("Please login with a passphrase at least 12 characters long.");
 			return false;
 		}
+
+		notify("Please wait...");
 
 		submitBtn.disabled = true;
 		authWorker.postMessage({
@@ -247,18 +250,135 @@ async function onSaveData(evt) {
 	}
 }
 
-function hideRegistration() {
-	createProfileFormEl.classList.add("hidden");
+function onChangePassphrase(evt) {
+	cancelEvent(evt);
+
+	var submitBtn = changePassphraseFormEl.querySelector("button[type=submit]");
+
+	if (!(
+		changePassphraseFormEl.classList.contains("hidden") ||
+		submitBtn.disabled
+	)) {
+		let accountID = sessionStorage.getItem("current-account-id");
+		let oldPassphraseEl = changePassphraseFormEl.querySelector("#change-old-password");
+		let newPassphraseEl = changePassphraseFormEl.querySelector("#change-password");
+		let confirmPassphraseEl = changePassphraseFormEl.querySelector("#change-password-confirm");
+
+		if (oldPassphraseEl.value.length < 12) {
+			warn("Please enter a current passphrase at least 12 characters long.");
+			return false;
+		}
+		if (newPassphraseEl.value.length < 12) {
+			warn("Please enter a new passphrase at least 12 characters long.");
+			return false;
+		}
+		if (newPassphraseEl.value !== confirmPassphraseEl.value) {
+			warn("Please make sure you enter the exact same passphrase twice.");
+			return false;
+		}
+
+		let oldPassword = oldPassphraseEl.value.trim();
+		let newPassword = newPassphraseEl.value.trim();
+		oldPassphraseEl.value = "";
+		newPassphraseEl.value = "";
+		confirmPassphraseEl.value = "";
+
+		notify("Please wait...");
+
+		submitBtn.disabled = true;
+		authWorker.postMessage({
+			changeAuth: {
+				oldPassword,
+				newPassword,
+				accountID,
+			},
+		});
+	}
+}
+
+function showRegistrationPage() {
+	hideLoginPage();
+	hideSavedDataPage();
+	hideChangePassphrasePage();
+
+	createProfileFormEl.removeAttribute("inert");
 	createProfileFormEl.reset();
 	var submitBtn = createProfileFormEl.querySelector("button[type=submit]");
 	submitBtn.disabled = false;
+	createProfileFormEl.classList.remove("hidden");
 }
 
-function hideLogin() {
-	loginFormEl.classList.add("hidden");
+function hideRegistrationPage() {
+	createProfileFormEl.classList.add("hidden");
+	createProfileFormEl.setAttribute("inert","inert");
+	createProfileFormEl.reset();
+	var submitBtn = createProfileFormEl.querySelector("button[type=submit]");
+	submitBtn.disabled = true;
+}
+
+function showLoginPage() {
+	hideRegistrationPage();
+	hideSavedDataPage();
+	hideChangePassphrasePage();
+
+	loginFormEl.removeAttribute("inert");
 	loginFormEl.reset();
 	var submitBtn = loginFormEl.querySelector("button[type=submit]");
 	submitBtn.disabled = false;
+	var createAnotherProfileBtn = document.getElementById("create-another-profile-btn");
+	createAnotherProfileBtn.disabled = false;
+	loginFormEl.classList.remove("hidden");
+	var passphraseEl = loginFormEl.querySelector("#login-password");
+	passphraseEl.focus();
+}
+
+function hideLoginPage() {
+	loginFormEl.classList.add("hidden");
+	loginFormEl.setAttribute("inert","inert");
+	loginFormEl.reset();
+	var submitBtn = loginFormEl.querySelector("button[type=submit]");
+	submitBtn.disabled = true;
+	var createAnotherProfileBtn = document.getElementById("create-another-profile-btn");
+	createAnotherProfileBtn.disabled = true;
+}
+
+async function showSavedDataPage() {
+	hideLoginPage();
+	hideRegistrationPage();
+	hideChangePassphrasePage();
+
+	savedDataFormEl.reset();
+	await populateSavedData();
+	savedDataFormEl.classList.remove("hidden");
+	savedDataFormEl.removeAttribute("inert");
+	var submitBtn = savedDataFormEl.querySelector("button[type=submit]");
+	submitBtn.disabled = false;
+}
+
+function hideSavedDataPage() {
+	savedDataFormEl.classList.add("hidden");
+	savedDataFormEl.setAttribute("inert","inert");
+	var submitBtn = savedDataFormEl.querySelector("button[type=submit]");
+	submitBtn.disabled = true;
+}
+
+function showChangePassphrasePage() {
+	hideLoginPage();
+	hideRegistrationPage();
+	hideSavedDataPage();
+
+	changePassphraseFormEl.reset();
+	changePassphraseFormEl.classList.remove("hidden");
+	changePassphraseFormEl.removeAttribute("inert");
+	var submitBtn = changePassphraseFormEl.querySelector("button[type=submit]");
+	submitBtn.disabled = false;
+}
+
+function hideChangePassphrasePage() {
+	changePassphraseFormEl.classList.add("hidden");
+	changePassphraseFormEl.setAttribute("inert","inert");
+	var submitBtn = changePassphraseFormEl.querySelector("button[type=submit]");
+	submitBtn.disabled = true;
 }
 
 function notify(msg,isModal = false) {
@@ -273,8 +393,8 @@ function warn(msg,isModal = true) {
 
 async function onAuthMessage({ data }) {
 	if (data.login === true) {
-		// upgrade of auth credentials pending?
-		if (data.upgradePending) {
+		// upgrade/change of auth credentials pending?
+		if (data.upgradePending || data.changePending) {
 			// decrypt/extract current data
 			tmpDataBackup = await DataManager.getData(
 				data.accountID,
@@ -290,11 +410,15 @@ async function onAuthMessage({ data }) {
 				},
 			});
 
-			notify("Upgrading data encryption, please wait...");
+			notify(
+				data.upgradePending ? "Upgrading data encryption, please wait..." :
+				data.changePending ? "Re-encrypting data with new credentials, please wait..." :
+				"Please wait..."
+			);
 			return;
 		}
 		// auth credentials regenerated?
-		else if (data.authRegenerated && tmpDataBackup) {
+		else if (data.authRegenerated && tmpDataBackup !== UNSET) {
 			try {
 				// re-save the data using the upgraded
 				// encryption credentials
@@ -302,19 +426,30 @@ async function onAuthMessage({ data }) {
 					tmpDataBackup,
 					data.accountID,
 					data.keyText,
-					/*upgrade=*/true
+					/*resaveWithNewCredentials=*/true
 				);
 				if (!res) {
 					throw "Save failed.";
 				}
-				tmpDataBackup = null;
+				tmpDataBackup = UNSET;
 			}
 			catch (err) {
 				console.log(err);
-				warn("Re-saving data (during credentials upgrade) failed. Please try again.");
 
-				let submitBtn = loginFormEl.querySelector("button[type=submit]");
-				submitBtn.disabled = false;
+				// login page is active?
+				if (!loginFormEl.classList.contains("hidden")) {
+					warn("Re-saving data (during credentials upgrade) failed. Please login again.");
+
+					let submitBtn = loginFormEl.querySelector("button[type=submit]");
+					submitBtn.disabled = false;
+				}
+				// change-passphrase page is active?
+				else if (!changePassphraseFormEl.classList.contains("hidden")) {
+					warn("Re-saving data (during credentials change) failed. Please try again.");
+
+					let submitBtn = changePassphraseFormEl.querySelector("button[type=submit]");
+					submitBtn.disabled = false;
+				}
 				return;
 			}
 		}
@@ -323,17 +458,25 @@ async function onAuthMessage({ data }) {
 		sessionStorage.setItem("current-account-id",data.accountID);
 		sessionStorage.setItem("current-key-text",data.keyText);
 
-		NotificationManager.hide();
-		hideRegistration();
-		hideLogin();
-		await populateSavedData();
-		savedDataFormEl.classList.remove("hidden");
+		// passphrase credentials changed?
+		let credentialsChanged = (
+			data.authRegenerated &&
+			!changePassphraseFormEl.classList.contains("hidden")
+		);
 
+		NotificationManager.hide();
+		await showSavedDataPage();
+
+		// new local profile created?
 		if (data.credentialsCreated) {
 			notify(
 				"Local profile created successfully, you're now logged in!",
 				/*isModal=*/true
 			);
+		}
+		// passphrase credentials changed?
+		else if (credentialsChanged) {
+			notify("Passphrase changed successfully!");
 		}
 	}
 	else if (data.error) {
@@ -341,14 +484,6 @@ async function onAuthMessage({ data }) {
 		for (let btn of submitBtns) {
 			btn.disabled = false;
 		}
-
-		// is the login form active?
-		if (!loginFormEl.classList.contains("hidden")) {
-			let passphraseEl = loginFormEl.querySelector("#login-password");
-			passphraseEl.value = "";
-		}
-
-		console.log(data.error);
 		warn(data.error);
 	}
 }
