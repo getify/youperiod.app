@@ -50,6 +50,8 @@ If you would like more details about the technical architecture of the app (clie
 
 ## Contributing
 
+Before contributing to this project, **[please make sure to review our Code of Conduct](CODE_OF_CONDUCT.md)**.
+
 PRs for this project are welcome. Please check the open issues and discussions before filing new issues or PRs.
 
 If you are looking to contribute to the design, there is an active [Figma project](https://www.figma.com/team_invite/redeem/RGRbYTgALoGkzWFAPiIvKX) in which we test all the visual changes and enhancements prior to being developed. Leave a comment [here](https://github.com/getify/youperiod.app/issues/2) and edit permissions will be granted.
