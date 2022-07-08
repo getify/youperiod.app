@@ -62,8 +62,14 @@ representative at an online or offline event.
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported to the community leaders responsible for enforcement at : 
 
- - Kyle Simpson getify@gmail.com
- - Pam Selle pam@thewebivore.com
+ - Kyle Simpson (@getify) getify@gmail.com
+ - Pam Selle (@pselle) pam@thewebivore.com
+ - Aditi Ranka (@aditiranka27) aditi.ranka@gmail.com
+ - @artnerdnet artnerdnet@gmail.com
+ - Sandra Molina (@sandramolina) molina.sandra.101@gmail.com
+ - Nima Mohamadian (@novonimo) nimamohamadian89@gmail.com
+ - Abednego Mwanza (@AbednegoTM) abednegomwanza@gmail.com
+ - Prabhpreet Singh (@prabhpreet-code) prabhpreetsingh.singh0203@gmail.com
 
 All complaints will be reviewed and investigated promptly and fairly.
 
