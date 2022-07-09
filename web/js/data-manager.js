@@ -51,7 +51,7 @@ async function saveData(data,accountID,keyText,resaveWithNewCredentials = false)
 
 		// discard previous auth credentials now that
 		// credentials change/upgrade is complete?
-		if (resaveWithCredentials) {
+		if (resaveWithNewCredentials) {
 			delete account.oldLoginChallenge;
 			delete account.oldKeyInfo;
 		}
