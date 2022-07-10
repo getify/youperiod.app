@@ -33,6 +33,12 @@ button {
 	cursor: pointer;
 }
 
+form input[type=text],
+form input[type=password],
+form textarea {
+	max-width: calc(var(--vw-unit) * 75);
+}
+
 main[inert] {
 	opacity: 0.5;
 }
