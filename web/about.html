@@ -1,65 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>About YOU .</title>
+		<meta charset="utf-8" />
+		<title>About YOU.</title>
+
+		<meta name="viewport" content="width=device-width" />
+		<meta name="”robots”" content="index, follow" />
+		<meta name="author" content="Anonymous" />
+		<meta itemprop="name" content="You." />
+		<meta itemprop="description" content="You. -- About Us" />
+		<meta
+			itemprop="image"
+			content="https://youperiod.app/images/logo-social-small.png"
+		/>
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content="You." />
+		<meta
+			name="twitter:description"
+			content="About You. -- The privacy-first period-tracking app"
+		/>
+		<meta
+			name="twitter:image"
+			content="https://youperiod.app/images/logo-social-small.png"
+		/>
+		<meta name="twitter:image:alt" content="You. App" />
+		<meta name="title" property="og:title" content="You." />
+		<meta
+			name="description"
+			property="og:description"
+			content="About You. -- The privacy-first period-tracking app"
+		/>
+		<meta
+			name="image"
+			property="og:image"
+			content="https://youperiod.app/images/logo-social-large.png"
+		/>
+		<meta
+			name="url"
+			property="og:url"
+			content="https://youperiod.app/about.html"
+		/>
+		<meta name="site_name" property="og:site_name" content="You." />
+		<meta name="type" property="og:type" content="website" />
 
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<link rel="stylesheet" href="css/style.css" />
+		<script integrity="sha256-CoCYJ/tTxH9vJyISOUlowiGKF8OokDL5QBuS3H8R1/g=">
+			// compute the vw/vh units more reliably than CSS does itself
+			if (
+				document.documentElement &&
+				document.documentElement.style &&
+				document.documentElement.style.setProperty
+			) {
+				let docEl = document.documentElement;
+				let width = Math.max(300, docEl.clientWidth);
+				let height = Math.max(300, docEl.clientHeight);
+				docEl.style.setProperty(
+					"--vw-unit",
+					`${(width / 100).toFixed(1)}px`
+				);
+				docEl.style.setProperty(
+					"--vh-unit",
+					`${(height / 100).toFixed(1)}px`
+				);
+			}
+		</script>
 	</head>
 	<body>
-		<h2>A privacy-first period tracking app.</h2>
+		<main>
+			<h1 id="logo">
+				YOU<i
+					class="bold-period"
+					aria-label="stylized period in red color"
+				></i>
+			</h1>
+			<h2>A privacy-first period tracking app.</h2>
 
-		<p>
-			We could almost all agree that it's never been more important for us
-			to OWN OUR INFORMATION, not governments or "big tech" companies, so
-			that we decide what is done with that information.
-		</p>
+			<p>
+				We could almost all agree that it's never been more important
+				for us to OWN OUR INFORMATION, not governments or "big tech"
+				companies, so that we decide what is done with that information.
+			</p>
 
-		<p>
-			We believe that especially goes for private medical/health data, of
-			which menstrual tracking (for women / people with uteruses) might
-			just be some of the most sensitive and important to protect.
-		</p>
+			<p>
+				We believe that especially goes for private medical/health data,
+				of which menstrual tracking (for women / people with uteruses)
+				might just be some of the most sensitive and important to
+				protect.
+			</p>
 
-		<p>
-			Companies and apps can promise all they want that they're being safe
-			and private with our information. But if they have our information,
-			and they're a company, they're going to have to make money somehow,
-			either by charging us for it, or worse, charging someone else to use
-			it in some way.
-		</p>
+			<p>
+				Companies and apps can promise all they want that they're being
+				safe and private with our information. But if they have our
+				information, and they're a company, they're going to have to
+				make money somehow, either by charging us for it, or worse,
+				charging someone else to use it in some way.
+			</p>
 
-		<p>
-			We believe this kind of private and sensitive medical information
-			belongs to you, and you alone. As such, YOU. (the app) puts you in
-			control of all your information, and never collects or tracks
-			anything about you, not even your name or email address. Since we
-			don't have any of your data, we obviously CANNOT sell it or hand it
-			over to any governmental authority.
-		</p>
+			<p>
+				We believe this kind of private and sensitive medical
+				information belongs to you, and you alone. As such, YOU. (the
+				app) puts you in control of all your information, and never
+				collects or tracks anything about you, not even your name or
+				email address. Since we don't have any of your data, we
+				obviously CANNOT sell it or hand it over to any governmental
+				authority.
+			</p>
 
-		<p>
-			Everything you enter into YOU. (the app) is yours, always and only
-			yours. It stays on your device, protected and secure, and you decide
-			what to do with that information.
-		</p>
+			<p>
+				Everything you enter into YOU. (the app) is yours, always and
+				only yours. It stays on your device, protected and secure, and
+				you decide what to do with that information.
+			</p>
 
-		<p>This app is free to use, and will remain so forever.</p>
+			<p>This app is free to use, and will remain so forever.</p>
 
-		<p>
-			Once installed, this web-app (PWA) runs entirely offline -- only
-			locally on your device, with no need for any internet or to connect
-			to any remote service -- and uses strong cryptography practices to
-			keep your data secure and private on your device, ONLY.
-		</p>
+			<p>
+				Once installed, this web-app (PWA) runs entirely offline -- only
+				locally on your device, with no need for any internet or to
+				connect to any remote service -- and uses strong cryptography
+				practices to keep your data secure and private on your device,
+				ONLY.
+			</p>
 
-		<p>
-			It's built with love and respect, for you, and only about you, and
-			only to help you keep and track your own private health information.
-			That's it. Period.
-		</p>
+			<p>
+				It's built with love and respect, for you, and only about you,
+				and only to help you keep and track your own private health
+				information. That's it. Period.
+			</p>
+		</main>
+
+		<footer>
+			&copy;2022 YOU<i
+				class="bold-period"
+				aria-label="stylized period in red color"
+			></i>
+		</footer>
 	</body>
 </html>
