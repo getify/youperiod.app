@@ -1,150 +1,272 @@
 <!DOCTYPE html>
 <html lang="en-US">
-<head>
-<meta charset="utf-8">
-<title>YOU .</title>
+	<head>
+		<meta charset="utf-8" />
+		<title>YOU .</title>
 
-<meta name="viewport" content="width=device-width">
-<meta name=”robots” content="index, follow">
-<meta name="author" content="Anonymous">
-<meta itemprop="name" content="You.">
-<meta itemprop="description" content="You. -- The privacy-first period-tracking app">
-<meta itemprop="image" content="https://youperiod.app/images/logo-social-small.png">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="You.">
-<meta name="twitter:description" content="You. -- The privacy-first period-tracking app">
-<meta name="twitter:image" content="https://youperiod.app/images/logo-social-small.png">
-<meta name="twitter:image:alt" content="You. App">
-<meta name="title" property="og:title" content="You.">
-<meta name="description" property="og:description" content="You. -- The privacy-first period-tracking app">
-<meta name="image" property="og:image" content="https://youperiod.app/images/logo-social-large.png">
-<meta name="url" property="og:url" content="https://youperiod.app/">
-<meta name="site_name" property="og:site_name" content="You.">
-<meta name="type" property="og:type" content="website">
+		<meta name="viewport" content="width=device-width" />
+		<meta name="”robots”" content="index, follow" />
+		<meta name="author" content="Anonymous" />
+		<meta itemprop="name" content="You." />
+		<meta
+			itemprop="description"
+			content="You. -- The privacy-first period-tracking app"
+		/>
+		<meta
+			itemprop="image"
+			content="https://youperiod.app/images/logo-social-small.png"
+		/>
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content="You." />
+		<meta
+			name="twitter:description"
+			content="You. -- The privacy-first period-tracking app"
+		/>
+		<meta
+			name="twitter:image"
+			content="https://youperiod.app/images/logo-social-small.png"
+		/>
+		<meta name="twitter:image:alt" content="You. App" />
+		<meta name="title" property="og:title" content="You." />
+		<meta
+			name="description"
+			property="og:description"
+			content="You. -- The privacy-first period-tracking app"
+		/>
+		<meta
+			name="image"
+			property="og:image"
+			content="https://youperiod.app/images/logo-social-large.png"
+		/>
+		<meta name="url" property="og:url" content="https://youperiod.app/" />
+		<meta name="site_name" property="og:site_name" content="You." />
+		<meta name="type" property="og:type" content="website" />
 
-<link rel="canonical" href="https://youperiod.app/" />
-<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-<link rel="stylesheet" href="css/style.css">
-<script integrity="sha256-CoCYJ/tTxH9vJyISOUlowiGKF8OokDL5QBuS3H8R1/g=">
-// compute the vw/vh units more reliably than CSS does itself
-if (document.documentElement && document.documentElement.style && document.documentElement.style.setProperty) {
-	let docEl = document.documentElement;
-	let width = Math.max(300,docEl.clientWidth);
-	let height = Math.max(300,docEl.clientHeight);
-	docEl.style.setProperty("--vw-unit",`${(width / 100).toFixed(1)}px`);
-	docEl.style.setProperty("--vh-unit",`${(height / 100).toFixed(1)}px`);
-}
-</script>
-</head>
-<body>
+		<link rel="canonical" href="https://youperiod.app/" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="stylesheet" href="css/style.css" />
+		<script integrity="sha256-CoCYJ/tTxH9vJyISOUlowiGKF8OokDL5QBuS3H8R1/g=">
+			// compute the vw/vh units more reliably than CSS does itself
+			if (
+				document.documentElement &&
+				document.documentElement.style &&
+				document.documentElement.style.setProperty
+			) {
+				let docEl = document.documentElement;
+				let width = Math.max(300, docEl.clientWidth);
+				let height = Math.max(300, docEl.clientHeight);
+				docEl.style.setProperty(
+					"--vw-unit",
+					`${(width / 100).toFixed(1)}px`
+				);
+				docEl.style.setProperty(
+					"--vh-unit",
+					`${(height / 100).toFixed(1)}px`
+				);
+			}
+		</script>
+	</head>
+	<body>
+		<header>
+			<h1 id="logo">
+				YOU<i
+					class="bold-period"
+					aria-label="stylized period in red color"
+				></i>
+			</h1>
 
-<main>
+			<nav>
+				<ul>
+					<li>
+						<a href="/">Home</a>
+					</li>
+					<li>
+						<a href="about.html">About</a>
+					</li>
+					<li>
+						<a href="privacy-policy.html">Privacy Policy</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
 
-<h1 id="logo">YOU<i class="bold-period" aria-label="stylized period in red color"></i></h1>
-<h2>The privacy-first period-tracking app</h2>
+		<main>
+			<h2>The privacy-first period-tracking app</h2>
 
-<hr>
+			<hr />
 
-<p>Development/testing mode... DO NOT ACTUALLY USE YET!</p>
+			<p>Development/testing mode... DO NOT ACTUALLY USE YET!</p>
 
-<hr>
+			<hr />
 
-<form id="create-profile" class="hidden" inert>
-	<p>
-		<label for="register-profile-name">Name/describe your local profile with any text you will recognize:</label>
-	</p>
-	<p>
-		<input type="text" id="register-profile-name" size="30" placeholder="set profile name/description" autocomplete="username">
-	</p>
-	<p>
-		<label for="register-password">To protect your information on this device, please choose a secret phrase (several words together that uniquely you will remember), separated by spaces, hyphens, punctuation, numbers, etc:</label>
-	</p>
-	<p>
-		<input type="password" id="register-password" size="30" placeholder="set secret phrase" autocomplete="phrase">
-	</p>
-	<p>
-		<input type="password" id="register-password-confirm" size="30" placeholder="confirm secret phrase" autocomplete="phrase">
-	</p>
-	<p>
-		<button type="submit" disabled>Create Local Profile</button>
-	</p>
-</form>
+			<form id="create-profile" class="hidden" inert>
+				<p>
+					<label for="register-profile-name"
+						>Name/describe your local profile with any text you will
+						recognize:</label
+					>
+				</p>
+				<p>
+					<input
+						type="text"
+						id="register-profile-name"
+						size="30"
+						placeholder="set profile name/description"
+						autocomplete="username"
+					/>
+				</p>
+				<p>
+					<label for="register-password"
+						>To protect your information on this device, please
+						choose a secret phrase (several words together that
+						uniquely you will remember), separated by spaces,
+						hyphens, punctuation, numbers, etc:</label
+					>
+				</p>
+				<p>
+					<input
+						type="password"
+						id="register-password"
+						size="30"
+						placeholder="set secret phrase"
+						autocomplete="phrase"
+					/>
+				</p>
+				<p>
+					<input
+						type="password"
+						id="register-password-confirm"
+						size="30"
+						placeholder="confirm secret phrase"
+						autocomplete="phrase"
+					/>
+				</p>
+				<p>
+					<button type="submit" disabled>Create Local Profile</button>
+				</p>
+			</form>
 
-<form id="login" class="hidden" inert>
-	<p>
-		Local Profile: <select id="profile-names"></select>
-	</p>
-	<p>
-		<label for="login-password">Secret Phrase:</label>
-		<input type="password" id="login-password" size="30" placeholder="your secret phrase" autocomplete="phrase">
-	</p>
-	<p>
-		<button type="submit" disabled>Login Locally</button>
-	</p>
-	<hr>
-	<p>
-		<button type="button" id="create-another-profile-btn" disabled>Create Another Local Profile</button>
-	</p>
-</form>
+			<form id="login" class="hidden" inert>
+				<p>
+					Local Profile:
+					<select id="profile-names"></select>
+				</p>
+				<p>
+					<label for="login-password">Secret Phrase:</label>
+					<input
+						type="password"
+						id="login-password"
+						size="30"
+						placeholder="your secret phrase"
+						autocomplete="phrase"
+					/>
+				</p>
+				<p>
+					<button type="submit" disabled>Login Locally</button>
+				</p>
+				<hr />
+				<p>
+					<button
+						type="button"
+						id="create-another-profile-btn"
+						disabled
+					>
+						Create Another Local Profile
+					</button>
+				</p>
+			</form>
 
-<form id="saved-data" class="hidden" inert>
-	<p>
-		<button type="button" id="logout-btn">Logout</button>
-		<button type="button" id="change-passphrase-btn">Change Passphrase</button>
-	</p>
-	<p>
-		Profile: <strong><span id="profile-label"></span></strong>
-		<button type="button" id="delete-profile-btn">Delete Local Profile</button>
-	</p>
-	<p>
-		<label for="saved-text">Enter anything you'd like to save (secure and private, on this device only):</label>
-	</p>
-	<p>
-		<textarea id="saved-text" cols="60" rows="8"></textarea>
-	</p>
-	<p>
-		<button type="submit" disabled>Save</button>
-	</p>
-</form>
+			<form id="saved-data" class="hidden" inert>
+				<p>
+					<button type="button" id="logout-btn">Logout</button>
+					<button type="button" id="change-passphrase-btn">
+						Change Passphrase
+					</button>
+				</p>
+				<p>
+					Profile: <strong><span id="profile-label"></span></strong>
+					<button type="button" id="delete-profile-btn">
+						Delete Local Profile
+					</button>
+				</p>
+				<p>
+					<label for="saved-text"
+						>Enter anything you'd like to save (secure and private,
+						on this device only):</label
+					>
+				</p>
+				<p>
+					<textarea id="saved-text" cols="60" rows="8"></textarea>
+				</p>
+				<p>
+					<button type="submit" disabled>Save</button>
+				</p>
+			</form>
 
-<form id="change-secure-passphrase" class="hidden" inert>
-	<p>
-		<label for="change-old-password">Current secret passphrase:</label>
-	</p>
-	<p>
-		<input type="password" id="change-old-password" size="30" placeholder="your secret phrase" autocomplete="phrase">
-	</p>
-	<p>
-		<label for="change-password">New secret passphrase:</label>
-	</p>
-	<p>
-		<input type="password" id="change-password" size="30" placeholder="new secret phrase" autocomplete="phrase">
-	</p>
-	<p>
-		<input type="password" id="change-password-confirm" size="30" placeholder="confirm secret phrase" autocomplete="phrase">
-	</p>
-	<p>
-		<button type="submit" disabled>Change Passphrase</button>
-	</p>
-</form>
+			<form id="change-secure-passphrase" class="hidden" inert>
+				<p>
+					<label for="change-old-password"
+						>Current secret passphrase:</label
+					>
+				</p>
+				<p>
+					<input
+						type="password"
+						id="change-old-password"
+						size="30"
+						placeholder="your secret phrase"
+						autocomplete="phrase"
+					/>
+				</p>
+				<p>
+					<label for="change-password">New secret passphrase:</label>
+				</p>
+				<p>
+					<input
+						type="password"
+						id="change-password"
+						size="30"
+						placeholder="new secret phrase"
+						autocomplete="phrase"
+					/>
+				</p>
+				<p>
+					<input
+						type="password"
+						id="change-password-confirm"
+						size="30"
+						placeholder="confirm secret phrase"
+						autocomplete="phrase"
+					/>
+				</p>
+				<p>
+					<button type="submit" disabled>Change Passphrase</button>
+				</p>
+			</form>
+		</main>
 
-</main>
+		<footer>
+			&copy;2022 YOU<i
+				class="bold-period"
+				aria-label="stylized period in red color"
+			></i>
+		</footer>
 
-<footer>&copy;2022 YOU<i class="bold-period" aria-label="stylized period in red color"></i></footer>
+		<div id="notification-banner" class="hidden">
+			<form>
+				<div class="msg" aria-live="off" aria-atomic="true"></div>
+				<button type="button" class="cancel-btn" class="hidden">
+					Cancel
+				</button>
+				<button type="submit">OK</button>
+			</form>
+		</div>
 
-<div id="notification-banner" class="hidden"><form>
-	<div class="msg" aria-live="off" aria-atomic="true"></div>
-	<button type="button" class="cancel-btn" class="hidden">Cancel</button>
-	<button type="submit">OK</button>
-</form></div>
+		<!----------------------------------->
 
-
-<!----------------------------------->
-
-<script src="js/external/base64-arraybuffer.umd.js"></script>
-<script src="js/util.js"></script>
-<script type="module" src="js/main.js"></script>
-<script type="module" src="js/window-resize.js"></script>
-
-</body>
+		<script src="js/external/base64-arraybuffer.umd.js"></script>
+		<script src="js/util.js"></script>
+		<script type="module" src="js/main.js"></script>
+		<script type="module" src="js/window-resize.js"></script>
+	</body>
 </html>
