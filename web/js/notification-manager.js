@@ -1,7 +1,10 @@
 export { init, show, hide, };
 
 const AUTO_DISMISS_DELAY = 5000;
+var bodyEl;
 var mainEl;
+var headerEl;
+var footerEl;
 var bannerEl;
 var formEl;
 var msgEl;
@@ -14,7 +17,10 @@ var closeCallback;
 // ****************************
 
 function init(mainDOMElement) {
-	mainEl = mainDOMElement;
+	bodyEl = mainDOMElement;
+	mainEl = bodyEl.querySelector("main");
+	headerEl = bodyEl.querySelector("header");
+	footerEl = bodyEl.querySelector("footer");
 	bannerEl = document.getElementById("notification-banner");
 	formEl = bannerEl.querySelector("form");
 	msgEl = bannerEl.querySelector(".msg");
@@ -49,6 +55,8 @@ function show(msg,isModal = false,isError = false,showCancel = false,onClose = (
 		okBtnEl.classList.remove("hidden");
 		okBtnEl.focus();
 		mainEl.setAttribute("inert","inert");
+		headerEl.setAttribute("inert","inert");
+		footerEl.setAttribute("inert","inert");
 		mainEl.addEventListener("click",cancelEvent,true);
 	}
 	else {
@@ -115,6 +123,8 @@ function hide(result = false) {
 		cancelBtnEl.classList.add("hidden");
 		bannerEl.classList.add("hidden");
 		mainEl.removeAttribute("inert");
+		headerEl.removeAttribute("inert");
+		footerEl.removeAttribute("inert");
 		document.removeEventListener("click",dismiss,true);
 		document.removeEventListener("keydown",keyboardDismiss,true);
 		document.removeEventListener("keypress",keyboardDismiss,true);
