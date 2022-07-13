@@ -330,10 +330,12 @@ function onStartDeleteProfile(evt) {
 
 	NotificationManager.show(
 		"Warning: This will PERMANENTLY DELETE ALL your saved data. Continue?",
-		/*isModal=*/true,
-		/*isError=*/false,
-		/*showCancel=*/true,
-		onClose
+		{
+			isModal: true,
+			isError: false,
+			showCancel: true,
+			onClose,
+		}
 	);
 
 
@@ -445,11 +447,16 @@ function hideChangePassphrasePage() {
 }
 
 function notify(msg,isModal = false) {
-	NotificationManager.show(msg,isModal,/*isError=*/false);
+	NotificationManager.show(msg, {
+		isModal: isModal,
+	});
 }
 
 function warn(msg,isModal = true) {
-	NotificationManager.show(msg,isModal,/*isError=*/true);
+	NotificationManager.show(msg, {
+		isModal: isModal,
+		isError: true,
+	});
 }
 
 // *******************************
