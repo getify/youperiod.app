@@ -70,6 +70,7 @@ reported to the community leaders responsible for enforcement at :
  - Nima Mohamadian (@novonimo) nimamohamadian89@gmail.com
  - Abednego Mwanza (@AbednegoTM) abednegomwanza@gmail.com
  - Prabhpreet Singh (@prabhpreet-code) prabhpreetsingh.singh0203@gmail.com
+ - Erin Coen (@eireann07) eireann70@gmail.com
 
 All complaints will be reviewed and investigated promptly and fairly.
 
