@@ -112,7 +112,7 @@ async function deleteProfile(accountID) {
 		getAccounts(),
 	]);
 
-	let { profileName, } = accounts[accountID];
+	var { profileName, } = accounts[accountID];
 	delete profiles[profileName];
 	delete accounts[accountID];
 
@@ -129,7 +129,7 @@ async function deleteProfile(accountID) {
 
 function populateProfileSelector(profiles) {
 	profileNameSelectorEl.options.length = 0;
-	let profileList = Object.entries(profiles).sort((p1,p2) => (
+	var profileList = Object.entries(profiles).sort((p1,p2) => (
 		(p1[0] < p2[0]) ? -1 :
 		(p1[0] > p2[0]) ? 1 :
 		0
@@ -184,7 +184,8 @@ async function onCreateProfile(evt) {
 		}
 
 		let accountID = self.crypto.randomUUID();
-		if (!(await addProfileAccount(profileNameEl.value,accountID))) {
+		let res = await addProfileAccount(profileNameEl.value,accountID);
+		if (!res) {
 			warn("Could not add a profile with the given name/description.");
 			return false;
 		}
@@ -265,7 +266,7 @@ async function onSaveData(evt) {
 			if (res) {
 				notify("Data saved (encrypted) successfully.");
 			}
-			if (!res) {
+			else {
 				throw res;
 			}
 		}
