@@ -1,6 +1,7 @@
 import * as idbKeyval from "/js/external/idb-keyval.js";
 import * as DataManager from "/js/data-manager.js";
 import * as NotificationManager from "/js/notification-manager.js";
+import * as BrowserSupport from "/js/browser-support.js";
 
 const UNSET = Symbol("unset");
 var mainEl;
@@ -28,6 +29,10 @@ async function main() {
 	profileLabelEl = document.getElementById("profile-label");
 
 	NotificationManager.init(mainEl);
+
+	if (!BrowserSupport.minimumFeaturesSupported()) {
+		showUnsupportedBrowserPage();
+	}
 
 	eventHandlers: {
 		let createAnotherProfileBtn = document.getElementById("create-another-profile-btn");
@@ -359,6 +364,24 @@ function onStartDeleteProfile(evt) {
 			notify("Phew, glad we didn't accidentally delete your data!");
 		}
 	}
+}
+
+function showUnsupportedBrowserPage() {
+	hideLoginPage();
+	hideSavedDataPage();
+	hideChangePassphrasePage();
+	hideRegistrationPage();
+
+	NotificationManager.show(
+		"Your browser doesn't support the features necessary to keep your data safe and reliable. Please try another browser.",
+		{
+			isModal: true,
+			isError: true,
+			canDismiss: false,
+		}
+	);
+
+	throw new Error("Unsupported browser: " + window.navigator.userAgent);
 }
 
 function showRegistrationPage() {
