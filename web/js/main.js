@@ -3,7 +3,6 @@ import * as DataManager from "/js/data-manager.js";
 import * as NotificationManager from "/js/notification-manager.js";
 
 const UNSET = Symbol("unset");
-var bodyEl;
 var createProfileFormEl;
 var loginFormEl;
 var savedDataFormEl;
@@ -19,7 +18,7 @@ document.addEventListener("DOMContentLoaded",() => main().catch(console.log),fal
 // ****************************
 
 async function main() {
-	bodyEl = document.querySelector("body");
+	var bodyEl = document.querySelector("body");
 	createProfileFormEl = document.getElementById("create-profile");
 	loginFormEl = document.getElementById("login");
 	savedDataFormEl = document.getElementById("saved-data");
