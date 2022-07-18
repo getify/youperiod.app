@@ -1,10 +1,11 @@
 export { init, show, hide, };
 
 const AUTO_DISMISS_DELAY = 5000;
+const NO_OP_FUNCTION = () => {};
 var mainEl;
 var bannerEl;
 var formEl;
-var msgEl;
+var messageEl;
 var cancelBtnEl;
 var okBtnEl;
 var autoDismissTimer;
@@ -17,7 +18,7 @@ function init(mainDOMElement) {
 	mainEl = mainDOMElement;
 	bannerEl = document.getElementById("notification-banner");
 	formEl = bannerEl.querySelector("form");
-	msgEl = bannerEl.querySelector(".msg");
+	messageEl = bannerEl.querySelector(".msg");
 	cancelBtnEl = bannerEl.querySelector("button.cancel-btn");
 	okBtnEl = bannerEl.querySelector("button[type=submit]");
 
@@ -25,8 +26,22 @@ function init(mainDOMElement) {
 	cancelBtnEl.addEventListener("click",() => hide(/*result=*/false),false);
 }
 
-function show(msg,isModal = false,isError = false,showCancel = false,onClose = () => {}) {
-	closeCallback = onClose;
+/**
+ * Displays a notification to the end-user
+ * @param {string} message
+ * @param {Object} options
+ * @param {boolean} options.isModal if true, user must click a button to dismiss; false will clear after a set duration
+ * @param {boolean} options.isError display error styling if true
+ * @param {boolean} options.showCancel display cancel button
+ * @param {boolean} options.canDismiss if false, persist notification indefinitely
+ * @param {Function} options.onClose on close callback
+ */
+function show(message, options = {}) {
+	var isModal = "isModal" in options ? options.isModal : false;
+	var isError = "isError" in options ? options.isError : false;
+	var showCancel = "showCancel" in options ? options.showCancel : false;
+	var canDismiss = "canDismiss" in options ? options.canDismiss : true;
+	closeCallback = "onClose" in options ? options.onClose : NO_OP_FUNCTION;
 
 	// banner already shown?
 	if (!bannerEl.classList.contains("hidden")) {
@@ -39,9 +54,9 @@ function show(msg,isModal = false,isError = false,showCancel = false,onClose = (
 	else {
 		bannerEl.classList.remove("error");
 	}
-	msgEl.innerText = msg;
+	messageEl.innerText = message;
 	bannerEl.classList.remove("hidden");
-	msgEl.setAttribute("aria-live","polite");
+	messageEl.setAttribute("aria-live","polite");
 
 	bannerEl.addEventListener("click",clearAutoDismissTimer,true);
 
@@ -76,6 +91,36 @@ function show(msg,isModal = false,isError = false,showCancel = false,onClose = (
 	else {
 		cancelBtnEl.classList.add("hidden");
 	}
+
+	if (canDismiss) {
+		addEventListeners(isModal, showCancel);
+	}
+	else {
+		okBtnEl.classList.add("hidden");
+	}
+}
+
+function addEventListeners(isModal, showCancel) {
+	bannerEl.addEventListener("click",clearAutoDismissTimer,true);
+
+	if (isModal) {
+		mainEl.addEventListener("click",cancelEvent,true);
+	}
+	else {
+		if (autoDismissTimer) {
+			clearTimeout(autoDismissTimer);
+		}
+		autoDismissTimer = setTimeout(() => hide(/*result=*/false),AUTO_DISMISS_DELAY);
+		document.addEventListener("click",dismiss,true);
+	}
+
+	if (!isModal || showCancel) {
+		document.addEventListener("keydown",keyboardDismiss,true);
+		document.addEventListener("keypress",keyboardDismiss,true);
+	}
+	else {
+		mainEl.addEventListener("keydown",cancelEvent,true);
+	}
 }
 
 function clearAutoDismissTimer() {
@@ -109,8 +154,8 @@ function hide(result = false) {
 	clearAutoDismissTimer();
 
 	if (!bannerEl.classList.contains("hidden")) {
-		msgEl.innerText = "";
-		msgEl.setAttribute("aria-live","off");
+		messageEl.innerText = "";
+		messageEl.setAttribute("aria-live","off");
 		okBtnEl.classList.remove("hidden");
 		cancelBtnEl.classList.add("hidden");
 		bannerEl.classList.add("hidden");
