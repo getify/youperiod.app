@@ -30,7 +30,7 @@ function textEncodeDecodeSupported() {
 	return "TextEncoder" in window && "TextDecoder" in window;
 }
 
-function storeManagerPersistSupported() {
+function storageManagerPersistSupported() {
 	return "storage" in window.navigator
 		&& typeof window.navigator.storage.persist === "function";
 }
@@ -49,7 +49,7 @@ function getUserMediaSupported() {
 		&& typeof window.navigator.mediaDevices.getUserMedia === "function";
 }
 
-var MINIMUM_FEATURES_SUPPORTED = (
+cpnst MINIMUM_FEATURES_SUPPORTED = (
 	webAssemblySupported()
 	&& serviceWorkersSupported()
 	&& webWorkersSupported()
@@ -57,10 +57,10 @@ var MINIMUM_FEATURES_SUPPORTED = (
 	&& sessionStorageSupported()
 	&& webCryptoSupported()
 	&& textEncodeDecodeSupported()
-	&& storeManagerPersistSupported()
+	&& storageManagerPersistSupported()
 );
 
-var OPTIONAL_FEATURES_SUPPORTED = (
+const OPTIONAL_FEATURES_SUPPORTED = (
 	notificationApiSupported()
 	&& credentialsContainerSupported()
 	&& getUserMediaSupported()
