@@ -17,13 +17,8 @@ function indexedDbSupported() {
 }
 
 function sessionStorageSupported() {
-	var localStorageAvailable = "localStorage" in window
-		&& typeof window.localStorage.setItem === "function";
-
-	var sessionStorageAvailable = "sessionStorage" in window
+	return "sessionStorage" in window
 		&& typeof window.sessionStorage.setItem === "function";
-
-	return localStorageAvailable && sessionStorageAvailable;
 }
 
 function webCryptoSupported() {
