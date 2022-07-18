@@ -49,7 +49,7 @@ function getUserMediaSupported() {
 		&& typeof window.navigator.mediaDevices.getUserMedia === "function";
 }
 
-cpnst MINIMUM_FEATURES_SUPPORTED = (
+const MINIMUM_FEATURES_SUPPORTED = (
 	webAssemblySupported()
 	&& serviceWorkersSupported()
 	&& webWorkersSupported()
