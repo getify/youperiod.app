@@ -30,7 +30,7 @@ function init(mainDOMElement) {
  * Displays a notification to the end-user
  * @param {string} message
  * @param {Object} options
- * @param {boolean} options.isModal if isModal is true, clear after a set duration
+ * @param {boolean} options.isModal if true, user must click a button to dismiss; false will clear after a set duration
  * @param {boolean} options.isError display error styling if true
  * @param {boolean} options.showCancel display cancel button
  * @param {boolean} options.canDismiss if false, persist notification indefinitely
@@ -97,7 +97,6 @@ function show(message, options = {}) {
 	}
 	else {
 		okBtnEl.classList.add("hidden");
-		removeEventListeners();
 	}
 }
 
@@ -122,17 +121,6 @@ function addEventListeners(isModal, showCancel) {
 	else {
 		mainEl.addEventListener("keydown",cancelEvent,true);
 	}
-}
-
-function removeEventListeners() {
-	clearAutoDismissTimer();
-
-	bannerEl.removeEventListener("click",clearAutoDismissTimer,true);
-	mainEl.removeEventListener("click",cancelEvent,true);
-	document.removeEventListener("click",dismiss,true);
-	document.removeEventListener("keydown",keyboardDismiss,true);
-	document.removeEventListener("keypress",keyboardDismiss,true);
-	mainEl.removeEventListener("keydown",cancelEvent,true);
 }
 
 function clearAutoDismissTimer() {
