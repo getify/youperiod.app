@@ -17,8 +17,8 @@ var closeCallback;
 
 // ****************************
 
-function init(mainDOMElement) {
-	bodyEl = mainDOMElement;
+function init(bodyDOMElement) {
+	bodyEl = bodyDOMElement;
 	mainEl = bodyEl.querySelector("main");
 	headerEl = bodyEl.querySelector("header");
 	footerEl = bodyEl.querySelector("footer");
