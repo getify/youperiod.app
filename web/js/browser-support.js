@@ -49,25 +49,21 @@ function getUserMediaSupported() {
 		&& typeof window.navigator.mediaDevices.getUserMedia === "function";
 }
 
-function minimumFeaturesSupported() {
-	return (
-		webAssemblySupported()
-		&& serviceWorkersSupported()
-		&& webWorkersSupported()
-		&& indexedDbSupported()
-		&& sessionStorageSupported()
-		&& webCryptoSupported()
-		&& textEncodeDecodeSupported()
-		&& storeManagerPersistSupported()
-	);
-}
+var MINIMUM_FEATURES_SUPPORTED = (
+	webAssemblySupported()
+	&& serviceWorkersSupported()
+	&& webWorkersSupported()
+	&& indexedDbSupported()
+	&& sessionStorageSupported()
+	&& webCryptoSupported()
+	&& textEncodeDecodeSupported()
+	&& storeManagerPersistSupported()
+);
 
-function optionalFeaturesSupported() {
-	return (
-		notificationApiSupported()
-		&& credentialsContainerSupported()
-		&& getUserMediaSupported()
-	);
-}
+var OPTIONAL_FEATURES_SUPPORTED = (
+	notificationApiSupported()
+	&& credentialsContainerSupported()
+	&& getUserMediaSupported()
+);
 
-export { minimumFeaturesSupported, optionalFeaturesSupported };
+export { MINIMUM_FEATURES_SUPPORTED, OPTIONAL_FEATURES_SUPPORTED };

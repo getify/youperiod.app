@@ -1,7 +1,7 @@
 import * as idbKeyval from "/js/external/idb-keyval.js";
 import * as DataManager from "/js/data-manager.js";
 import * as NotificationManager from "/js/notification-manager.js";
-import * as BrowserSupport from "/js/browser-support.js";
+import { MINIMUM_FEATURES_SUPPORTED } from "/js/browser-support.js";
 
 const UNSET = Symbol("unset");
 var mainEl;
@@ -30,7 +30,7 @@ async function main() {
 
 	NotificationManager.init(mainEl);
 
-	if (!BrowserSupport.minimumFeaturesSupported()) {
+	if (!MINIMUM_FEATURES_SUPPORTED) {
 		showUnsupportedBrowserPage();
 	}
 
