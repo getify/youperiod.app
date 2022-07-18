@@ -39,7 +39,9 @@ form textarea {
 	max-width: calc(var(--vw-unit) * 75);
 }
 
-main[inert] {
+main[inert],
+header[inert],
+footer[inert] {
 	opacity: 0.5;
 }
 

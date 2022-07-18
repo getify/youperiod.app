@@ -4,7 +4,6 @@ import * as NotificationManager from "/js/notification-manager.js";
 import { MINIMUM_FEATURES_SUPPORTED } from "/js/browser-support.js";
 
 const UNSET = Symbol("unset");
-var mainEl;
 var createProfileFormEl;
 var loginFormEl;
 var savedDataFormEl;
@@ -20,7 +19,7 @@ document.addEventListener("DOMContentLoaded",() => main().catch(console.log),fal
 // ****************************
 
 async function main() {
-	mainEl = document.querySelector("main");
+	var bodyEl = document.querySelector("body");
 	createProfileFormEl = document.getElementById("create-profile");
 	loginFormEl = document.getElementById("login");
 	savedDataFormEl = document.getElementById("saved-data");
@@ -28,7 +27,7 @@ async function main() {
 	profileNameSelectorEl = document.getElementById("profile-names");
 	profileLabelEl = document.getElementById("profile-label");
 
-	NotificationManager.init(mainEl);
+	NotificationManager.init(bodyEl);
 
 	if (!MINIMUM_FEATURES_SUPPORTED) {
 		showUnsupportedBrowserPage();

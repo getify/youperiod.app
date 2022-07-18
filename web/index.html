@@ -38,9 +38,21 @@ if (document.documentElement && document.documentElement.style && document.docum
 </head>
 <body>
 
-<main>
+<header>
 
 <h1 id="logo">YOU<i class="bold-period" aria-label="stylized period in red color"></i></h1>
+
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+</nav>
+
+</header>
+
+<main>
+
 <h2>The privacy-first period-tracking app</h2>
 
 <hr>
@@ -132,11 +144,13 @@ if (document.documentElement && document.documentElement.style && document.docum
 
 <footer>&copy;2022 YOU<i class="bold-period" aria-label="stylized period in red color"></i></footer>
 
-<div id="notification-banner" class="hidden"><form>
-	<div class="msg" aria-live="off" aria-atomic="true"></div>
-	<button type="button" class="cancel-btn" class="hidden">Cancel</button>
-	<button type="submit">OK</button>
-</form></div>
+<div id="notification-banner" class="hidden">
+	<form>
+		<div class="msg" aria-live="off" aria-atomic="true"></div>
+		<button type="button" class="cancel-btn" class="hidden">Cancel</button>
+		<button type="submit">OK</button>
+	</form>
+</div>
 
 
 <!----------------------------------->
