@@ -2,9 +2,11 @@ import * as idbKeyval from "/js/external/idb-keyval.js";
 import * as DataManager from "/js/data-manager.js";
 import * as NotificationManager from "/js/notification-manager.js";
 import { MINIMUM_FEATURES_SUPPORTED } from "/js/browser-support.js";
+import * as RandomPhrase from "/js/passphrase/random-phrase.js";
 
 const UNSET = Symbol("unset");
 var createProfileFormEl;
+var passphraseSuggestionFormEl;
 var loginFormEl;
 var savedDataFormEl;
 var changePassphraseFormEl;
@@ -21,6 +23,7 @@ document.addEventListener("DOMContentLoaded",() => main().catch(console.log),fal
 async function main() {
 	var bodyEl = document.querySelector("body");
 	createProfileFormEl = document.getElementById("create-profile");
+	passphraseSuggestionFormEl = document.getElementById("generate-passphrase-suggestion");
 	loginFormEl = document.getElementById("login");
 	savedDataFormEl = document.getElementById("saved-data");
 	changePassphraseFormEl = document.getElementById("change-secure-passphrase");
@@ -47,6 +50,7 @@ async function main() {
 		deleteProfileBtn.addEventListener("click",onStartDeleteProfile,false);
 
 		createProfileFormEl.addEventListener("submit",onCreateProfile,false);
+		passphraseSuggestionFormEl.addEventListener("submit",onSuggestPassphrase,false);
 		loginFormEl.addEventListener("submit",onLogin,false);
 		savedDataFormEl.addEventListener("submit",onSaveData,false);
 		changePassphraseFormEl.addEventListener("submit",onChangePassphrase,false);
@@ -159,6 +163,21 @@ async function populateSavedData() {
 		let textareaEl = savedDataFormEl.querySelector("#saved-text");
 		let data = await DataManager.getData();
 		textareaEl.value = (data != null) ? data : "";
+	}
+}
+
+async function onSuggestPassphrase(evt) {
+	cancelEvent(evt);
+
+	var suggestionInput = passphraseSuggestionFormEl.querySelector("input[type=text]");
+	var submitBtn = passphraseSuggestionFormEl.querySelector("button[type=submit]");
+	var wordCountEl = passphraseSuggestionFormEl.querySelector("#generate-passphrase-word-count");
+
+	if (!(
+		passphraseSuggestionFormEl.classList.contains("hidden") ||
+		submitBtn.disabled
+	)) {
+		suggestionInput.value = await RandomPhrase.get(wordCountEl.value);
 	}
 }
 
@@ -393,6 +412,7 @@ function showRegistrationPage() {
 	var submitBtn = createProfileFormEl.querySelector("button[type=submit]");
 	submitBtn.disabled = false;
 	createProfileFormEl.classList.remove("hidden");
+	passphraseSuggestionFormEl.classList.remove("hidden");
 }
 
 function hideRegistrationPage() {
@@ -401,6 +421,7 @@ function hideRegistrationPage() {
 	createProfileFormEl.reset();
 	var submitBtn = createProfileFormEl.querySelector("button[type=submit]");
 	submitBtn.disabled = true;
+	passphraseSuggestionFormEl.classList.add("hidden");
 }
 
 function showLoginPage() {
