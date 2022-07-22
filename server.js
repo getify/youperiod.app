@@ -40,7 +40,7 @@ var CSPHeader = {
 			].join(" ")};`,
 
 			`connect-src ${[
-				"'none'",
+				"'self'",
 			].join(" ")};`
 		].join(" ")
 };

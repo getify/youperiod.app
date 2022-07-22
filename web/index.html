@@ -82,6 +82,22 @@ if (document.documentElement && document.documentElement.style && document.docum
 	</p>
 </form>
 
+<form id="generate-passphrase-suggestion" class="hidden">
+	<p>
+		<label for="generate-passphrase">Generate a secure passphrase.</label>
+	</p>
+	<p>
+		<label for="generate-passphrase-word-count">Word Count:</label>
+		<input type="number" id="generate-passphrase-word-count" min="1" max="6" value="4" autocomplete="phrase">
+	</p>
+	<p>
+		<input id="generate-passphrase" type="text" size="30" placeholder="generate passphrase" autocomplete="phrase">
+	</p>
+	<p>
+		<button type="submit">Generate passphrase</button>
+	</p>
+</form>
+
 <form id="login" class="hidden" inert>
 	<p>
 		Local Profile: <select id="profile-names"></select>
