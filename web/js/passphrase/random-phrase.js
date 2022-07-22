@@ -5,7 +5,6 @@ export { get };
 
 
 function segmentArray(arr,segmentSize) {
-	segmentSize = Math.max(1,Math.min(+segmentSize||0,arr.length));
 	return Array.apply(null,{length:Math.ceil(arr.length / segmentSize)}).map(function mapper(_,i){
 		return arr.slice(i*segmentSize,(i+1)*segmentSize);
 	});

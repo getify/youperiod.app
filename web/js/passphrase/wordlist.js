@@ -1,12 +1,7 @@
 export { get };
 
 async function get(languageCode) {
-	try {
-		return local(`/diceware/wordlist.${languageCode}.json`);
-	} catch (err) {
-		// Fallback to english if language file doesn't exist
-		return local(`/diceware/wordlist.en.json`);
-	}
+	return local(`/diceware/wordlist.${languageCode}.json`);
 }
 
 function local(filepath) {

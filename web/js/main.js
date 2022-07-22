@@ -2,7 +2,7 @@ import * as idbKeyval from "/js/external/idb-keyval.js";
 import * as DataManager from "/js/data-manager.js";
 import * as NotificationManager from "/js/notification-manager.js";
 import { MINIMUM_FEATURES_SUPPORTED } from "/js/browser-support.js";
-import * as PassphraseManager from "/js/passphrase-manager.js";
+import * as RandomPhrase from "/js/passphrase/random-phrase.js";
 
 const UNSET = Symbol("unset");
 var createProfileFormEl;
@@ -177,7 +177,7 @@ async function onSuggestPassphrase(evt) {
 		passphraseSuggestionFormEl.classList.contains("hidden") ||
 		submitBtn.disabled
 	)) {
-		suggestionInput.value = await PassphraseManager.generate(wordCountEl.value, 'en');
+		suggestionInput.value = await RandomPhrase.get(wordCountEl.value,"en");
 	}
 }
 

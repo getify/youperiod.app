@@ -1,10 +1,6 @@
 export { getLocalIntegers };
 
-async function getLocalIntegers(count,min,max) {
-    count = count || 2;
-    min = min || 0;
-    max = max || 1E9;
-
+async function getLocalIntegers(count = 2,min = 0,max = 1E9) {
     try {
         const crypto = window.crypto || window.msCrypto;
     } catch (err) {
@@ -13,24 +9,12 @@ async function getLocalIntegers(count,min,max) {
 
     var results = [];
 
-    // newer, more secure random crypto supported?
-    if (
-        (crypto && crypto.getRandomValues)
-    ) {
-        results = new Uint32Array(count);
-        crypto.getRandomValues(results);
+    results = new Uint32Array(count);
+    crypto.getRandomValues(results);
 
-        results = [].slice.call(results).map(function mapper(v){
-            return (v % max) + min;
-        });
-    }
-    // fall back to older sucky `Math.random()`
-    else {
-        results = [];
-        for (var i=0; i<count; i++) {
-            results.push( Math.floor( Math.random() * (max - min + 1)) + min );
-        }
-    }
+    results = [].slice.call(results).map(function mapper(v){
+        return (v % max) + min;
+    });
 
     return results;
 }
