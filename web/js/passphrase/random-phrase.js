@@ -1,4 +1,4 @@
-import * as WordList from './wordlist.js';
+import { wordlist } from './wordlist.js';
 import * as RandomIntegers from './random-integer.js';
 
 export { get };
@@ -17,9 +17,9 @@ function makePhrase(nums,wordlist) {
 		.join(" ");
 }
 
-async function get(wordCount, languageCode) {
+async function get(wordCount) {
 	return makePhrase(
 		await RandomIntegers.getLocalIntegers(wordCount * 5,1,6),
-		await WordList.get(languageCode)
+		await wordlist
 	);
 }

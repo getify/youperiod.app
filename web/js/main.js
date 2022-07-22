@@ -177,7 +177,7 @@ async function onSuggestPassphrase(evt) {
 		passphraseSuggestionFormEl.classList.contains("hidden") ||
 		submitBtn.disabled
 	)) {
-		suggestionInput.value = await RandomPhrase.get(wordCountEl.value,"en");
+		suggestionInput.value = await RandomPhrase.get(wordCountEl.value);
 	}
 }
 
