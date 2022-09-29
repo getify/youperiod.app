@@ -81,7 +81,7 @@ async function createEncryptionKey(account,password) {
 		argonDefaultOptions,
 		keyParams || {},	// override options
 		{
-			password: loginChallenge,
+			password,
 			salt,
 		}
 	));
