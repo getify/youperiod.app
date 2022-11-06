@@ -1,0 +1,77 @@
+.cycle-dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.cycle-info {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  border-radius: 11.3514px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 4px 36px 6px;
+  text-align: center;
+  margin: 15px;
+  width: 150px;
+}
+
+
+.calendar-container {
+  width: max-content;
+  height: max-content;
+  position: relative;
+  display: flex;
+  padding: 2% 0px 0px 0px;
+  justify-content: center;
+  top: 10%;
+  right: 0%;
+  width: 100%;
+  height: 100%;
+}
+
+.calendar {
+  height: max-content;
+  width: max-content;
+  border-radius: 11.3514px;
+  overflow: hidden;
+  padding: 15px 30px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 4px 36px 6px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+
+.year-change {
+  padding: 0px 10px;
+}
+
+.calendar-day-names {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  text-align: center;
+  justify-content: center;
+}
+
+.current-date {
+  border: 2px solid #8E35FF;
+  border-radius: 100%;
+}
+
+.predicted-period {
+  background-color: #FF3D00;
+  opacity: 0.5;
+  color: white;
+  border-radius: 100%;
+}
