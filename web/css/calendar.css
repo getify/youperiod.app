@@ -69,9 +69,34 @@
   border-radius: 100%;
 }
 
+/* class to add when a period it predicted to happen if that feature is added */
 .predicted-period {
-  background-color: #FF3D00;
+  background-color: #8E35FF;
   opacity: 0.5;
   color: white;
   border-radius: 100%;
+}
+
+/* class to add when a user logs that it is period */
+.period-day {
+  border: 2px solid #FF3D00;
+  border-radius: 100%;
+}
+
+/* class for when user indicates that period is light */
+.period-light {
+  background-color: rgba(255, 61, 0, 0.25);
+  color: white;
+}
+
+/* class for when user indicates that period is medium */
+.period-medium {
+  background-color: rgba(255, 61, 0, 0.5);
+  color: white;
+}
+
+/* class for when user indicates that period is heavy */
+.period-heavy {
+  background-color: rgba(255, 61, 0, 0.75);
+  color: white;
 }

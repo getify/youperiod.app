@@ -151,5 +151,31 @@ function changeCalendarArrows(change) {
 
   // calls the make calendar function again to make the new calendar
   makeCalendar(newMonthDisplay, newYearDisplay)
-
 };
+
+function startPeriod() {
+  pass
+
+  //  * pseudocode 
+  // when the button is clicked to start the period
+  // the button will take in the current date of today
+  // it will then add the class period-day to the div for that day
+  // it should then open maybe a module that will allow the user to select the flow strength of their period
+
+  // ? will this need to call make calendar again
+  
+  // ? maybe the make calendar func above like with the current day will need to call this func in reference to the data logged for period so that when the users scroll months any data they have entered will show
+}
+
+function trackFlow(flowInfo) {
+  pass
+  
+  // * pseudocode
+  // it will have the option buttons for light, medium, heavy
+  // user will select an option
+  // the button will register the day and add the proper class to the div for that day to display
+  
+  // ? will this need to call make calendar again
+
+  // ? maybe the make calendar func above like with the current day will need to call this func in reference to the data logged for period so that when the users scroll months any data they have entered will show
+}
