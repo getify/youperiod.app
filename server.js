@@ -149,6 +149,34 @@ async function onRequest(req,res) {
 			}
 		}
 
+		// check if the request url is using "auth-worker.js"
+		// when I just looked for "auth-worker.js" it didn't seem to actually find the url
+		if (req.url == "/js/auth-worker.js") {
+			res.writeHead(200, {
+				...HSTSHeader,
+				"Content-Security-Policy":
+			[
+				`default-src ${[
+					"'self'",
+				].join(" ")};`,
+	
+				`style-src ${[
+					"'self'",
+					"'unsafe-inline'",
+				].join(" ")};`,
+	
+				`script-src ${[
+					"'self'",
+					"wasm-unsafe-eval",
+				].join(" ")};`,
+	
+				`connect-src ${[
+					"'none'",
+				].join(" ")};`
+			].join(" ") }
+			)
+		}
+
 		// handle all other static files
 		staticServer.serve(req,res,async function onStaticComplete(err){
 			if (err) {
