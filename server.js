@@ -160,10 +160,6 @@ async function onRequest(req,res) {
 					"'self'",
 					"wasm-unsafe-eval",
 				].join(" ")};`,
-	
-				`connect-src ${[
-					"'none'",
-				].join(" ")};`
 			].join(" ") }
 			)
 		}
