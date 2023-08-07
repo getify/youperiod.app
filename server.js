@@ -24,15 +24,6 @@ var noSniffHeader = {
 var CSPHeader = {
 	"Content-Security-Policy":
 		[
-			`default-src ${[
-				"'self'",
-			].join(" ")};`,
-
-			`style-src ${[
-				"'self'",
-				"'unsafe-inline'",
-			].join(" ")};`,
-
 			`script-src ${[
 				"'self'",
 				// inline <script> tag for re-computing the vw/vh units
