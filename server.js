@@ -24,15 +24,6 @@ var noSniffHeader = {
 var CSPHeader = {
 	"Content-Security-Policy":
 		[
-			`default-src ${[
-				"'self'",
-			].join(" ")};`,
-
-			`style-src ${[
-				"'self'",
-				"'unsafe-inline'",
-			].join(" ")};`,
-
 			`script-src ${[
 				"'self'",
 				// inline <script> tag for re-computing the vw/vh units
@@ -147,6 +138,30 @@ async function onRequest(req,res) {
 				}
 				return;
 			}
+		}
+
+		// check if the request url is using "auth-worker.js"
+		// when I just looked for "auth-worker.js" it didn't seem to actually find the url
+		if (req.url == "/js/auth-worker.js") {
+			res.writeHead(200, {
+				...HSTSHeader,
+				"Content-Security-Policy":
+			[
+				`default-src ${[
+					"'self'",
+				].join(" ")};`,
+	
+				`style-src ${[
+					"'self'",
+					"'unsafe-inline'",
+				].join(" ")};`,
+	
+				`script-src ${[
+					"'self'",
+					"wasm-unsafe-eval",
+				].join(" ")};`,
+			].join(" ") }
+			)
 		}
 
 		// handle all other static files
