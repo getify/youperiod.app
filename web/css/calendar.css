@@ -64,7 +64,7 @@
   justify-content: center;
 }
 
-.current-date {
+#current-date {
   border: 2px solid #8E35FF;
   border-radius: 100%;
 }

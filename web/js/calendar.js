@@ -1,160 +1,211 @@
 // create the current date at open and makes the initial display calendar the current dates calendar
-const currentDate = new Date();
-makeCalendar(currentDate.getMonth(), currentDate.getFullYear())
+const MONTH_INFO = [
+  { month: "January", days: 31, monthNum: 0 },
+  { month: "February", days: 0, monthNum: 1 },
+  { month: "March", days: 31, monthNum: 2 },
+  { month: "April", days: 30, monthNum: 3 },
+  { month: "May", days: 31, monthNum: 4 },
+  { month: "June", days: 30 , monthNum: 5},
+  { month: "July", days: 31, monthNum: 6 },
+  { month: "August", days: 31, monthNum: 7 },
+  { month: "September", days: 30, monthNum: 8 },
+  { month: "October", days: 31, monthNum: 9 },
+  { month: "November", days: 30, monthNum: 10 },
+  { month: "December", days: 31, monthNum: 11 }
+];
+const [currentMonth, currentDay, currentYear] = getCurrentDate();
+// create calendar object and pass in current month/year
+makeCalendar(currentMonth, currentYear);
 
 // for the directional buttons in the calendar header it adds the function to change the calendar
-document.getElementById("previous-year").addEventListener("click", () => changeCalendarArrows("minus"));
-document.getElementById("next-year").addEventListener("click", () => changeCalendarArrows("add"));
+const clickHandlers = {
+  "previous-year": () => changeCalendarArrows("minus"),
+  "next-year": () => changeCalendarArrows("add")
+};
+document.getElementById("previous-year").addEventListener("click", clickHandlers["previous-year"]);
+document.getElementById("next-year").addEventListener("click", clickHandlers["next-year"]);
 
-// checks to see if the year is a leap year for calendar day population
-function checkLeapYear(year) {
-  if (year % 4 === 0) {
-    if (year % 100 === 0) {
-      if (year % 400 === 0) {
-        return true
-      }
-      return false
-    }
-    return true
+
+/**
+ * Determines if a year is a leap year
+ * @param {number} year - The year to evaluate
+ * @returns {boolean} True if leap year, false if not
+*/
+function isLeapYear(year) {
+  if (typeof year !== "number") {
+    throw new Error("Year must be a number");
   }
-  return false
+  if (year % 4 === 0) {
+    return year % 100 === 0 ? year % 400 === 0 : true;
+  }
+  return false;
 };
 
-// using the check for leap year to populate february days in the monthDayInfo list
+/**
+ * Returns number of days in February for a given year.
+ * @param {number} year - The year to check
+ * @returns {number} Days in February for that year
+*/
 function februaryDays(year) {
-  if (checkLeapYear(year)) {
-    return 29
-  } else {
-    return 28
+  if (typeof year !== "number") {
+    throw new Error("Year must be a number");
   }
+
+  const isLeap = isLeapYear(year);
+
+  return isLeap ? 29 : 28;
 }
 
-// creating the calendar information, can take in the month and year to make it for any month
-function makeCalendar(month, year) {
-  // gets the current date and breaks it into the month, day and year to be used to set the current date within the calendar to put the proper marker
-  // maybe don't need the duplication of the date but I am unsure
-  const currentDateInfo = new Date();
-  const currentDateInfoMonth = currentDateInfo.getMonth();
-  const currentDateInfoDay = currentDateInfo.getDate();
-  const currentDateInfoYear = currentDateInfo.getFullYear();
+/**
+ * Gets the current date and returns it broken into 
+ * month, day and year values.
+ * 
+ * @returns {Array} An array containing:
+ * - currentDateMonth {number} The current month number
+ * - currentDateDay {number} The current day of the month
+ * - currentDateYear {number} The current year
+*/
+function getCurrentDate() {
+  const currentDate = new Date();
+  const currentDateMonth = currentDate.getMonth();
+  const currentDateDay = currentDate.getDate();
+  const currentDateYear = currentDate.getFullYear();
 
-  // gets the first day of the month that is being passed to make sure the 1st is on the correct day in each calendar
-  const firstDayOfMonth = new Date(year, month, 1).getDay();
+  return [currentDateMonth, currentDateDay, currentDateYear];
+}
 
-  // list of the month and day info to be pulled from to make the calendar
-  let monthDayInfo = [
-    { month: "January", days: 31 },
-    { month: "February", days: februaryDays(year) },
-    { month: "March", days: 31 },
-    { month: "April", days: 30 },
-    { month: "May", days: 31 },
-    { month: "June", days: 30 },
-    { month: "July", days: 31 },
-    { month: "August", days: 31 },
-    { month: "September", days: 30 },
-    { month: "October", days: 31 },
-    { month: "November", days: 30 },
-    { month: "December", days: 31 }
-  ];
+/**
+ * Gets the month information for the given month number.
+ * 
+ * Looks up the month details in the MONTH_INFO constant array.
+ * For February, dynamically calculates the number of days 
+ * by calling the februaryDays() function.
+ *
+ * @param {number|string} month - The month number (0-11) or name
+ * @param {number} year - The year
+ * @returns {Object} The month information object
+*/
+function getMonthInfo (month, year) {
+  let monthNum;
+  
+  if (typeof month === "string") {
+    monthNum = MONTH_INFO.findIndex(m => m.month === month);
+  } else {
+    monthNum = month;
+  }
 
-  //  getting the days, month and years html tags/info so that they can be set or made
-  let daysOfMonth = document.querySelector(".calendar-days");
-  let calendarMonth = document.querySelector(".month");
-  let calendarYear = document.querySelector(".year");
+  const monthInfo = MONTH_INFO[monthNum];
 
-  // setting the html to display the value needed for the specific calendar
+  if (monthNum === 1) { // February
+    monthInfo.days = februaryDays(year);
+  }
+
+  return monthInfo;
+}
+
+/**
+ * 
+ * @param {Object} activeMonthInfo 
+ * @param {number} activeMonthFirstDay 
+ * @param {number} activeYear 
+ */
+function createCalendarDayDivs (activeMonthInfo, activeMonthFirstDay, activeYear) {
+  const daysOfMonth = document.querySelector(".calendar-days");
   daysOfMonth.innerHTML = "";
-  calendarMonth.innerHTML = monthDayInfo[month]["month"];
-  calendarYear.innerHTML = year;
 
-  // looping to make the actual days of the calendar
-  // loops through the index for as long as it is shorter than the total days in the month plus the first of the month value
-  // the first day has to be added to account for the loops that will have no number values because of when it should start adding day numbers
-  for (let i = 0; i < monthDayInfo[month]["days"] + firstDayOfMonth; i++) {
+  for (let dayIndex = 0; dayIndex < activeMonthInfo.days + activeMonthFirstDay; dayIndex++) {
     // creates a new div for each number
     let day = document.createElement("div");
 
     // when the index is finally equal or above the numerical value of the first day of the month the numbers for the days start to get added
-    if (i >= firstDayOfMonth) {
-      // take the index - the first day and add one to calculate each day value places the days at the proper spot
-      day.innerHTML = i - firstDayOfMonth + 1;
+    if (dayIndex >= activeMonthFirstDay) {
+      /*By doing dayIndex - firstDayOfMonth, we essentially reset the count to start at 1 on the day that the 1st of the month falls on. Then we add 1 back to get the correct day number.
+
+      This allows us to iterate through the entire grid of dates, but only print the day numbers starting in the correct spot based on firstDayOfMonth. */
+      day.innerHTML = dayIndex - activeMonthFirstDay + 1;
 
       // checks if the calendars year, month and day are the current day
       //  since the index iterates even before the first day this will take the first day of the month away from it to only add 1 to only look within the indexes that have numerical values and compare that to the current date
-      if (i - firstDayOfMonth + 1 === currentDateInfoDay && year === currentDateInfoYear && month === currentDateInfoMonth) {
+      if (dayIndex - activeMonthFirstDay + 1 === currentDay && activeMonthInfo.monthNum === currentMonth && activeYear === currentYear) {
         // create the current day indicator
-        day.classList.add("current-date");
+        day.setAttribute("id", "current-date");
       }
     }
+
     // pushes the days made to the calendars month div to actually have days
     daysOfMonth.appendChild(day);
   }
+}
+
+/**
+ * Creates a calendar for the given month and year
+ * @param {number} month - The month number (0-11)
+ * @param {number} year - The year
+*/
+function makeCalendar(month, year) {
+  if (typeof month !== "number"  || typeof year !== "number") {
+    throw new Error("Month and year must be numbers");
+  }
+  // gets the first day of the month that is being passed to make sure the 1st is on the correct day in each calendar
+  let monthInfo = getMonthInfo(month, year);
+  const firstDayOfMonth = new Date(year, month, 1).getDay();
+
+  //  getting the days, month and years html tags/info so that they can be set or made
+  // let daysOfMonth = document.querySelector(".calendar-days");
+  const calendarMonth = document.querySelector(".month");
+  const calendarYear = document.querySelector(".year");
+
+  // setting the html to display the value needed for the specific calendar
+  calendarYear.innerHTML = year;
+  calendarMonth.innerHTML = monthInfo.month;
+
+  createCalendarDayDivs(monthInfo, firstDayOfMonth, year);
 };
 
-// function for changing the calendar with the arrows
+/**
+* Changes the displayed calendar month and year based on the 
+* provided change direction.
+*
+* @param {string} change - Either "add" or "minus" to indicate changing 
+* the calendar ahead or behind one month
+*/
 function changeCalendarArrows(change) {
   // gets the currently displaying calendar month and year
-  const monthDisplayInfo = document.querySelector(".month").textContent;
-  const yearDisplayInfo = document.querySelector(".year").textContent;
-
-  // a dictionary to use the string info to know the numerical month value
-  const monthInfo = {
-    "January": 0,
-    "February": 1,
-    "March": 2,
-    "April": 3,
-    "May": 4,
-    "June": 5,
-    "July": 6,
-    "August": 7,
-    "September": 8,
-    "October": 9,
-    "November": 10,
-    "December": 11,
-  };
+  const monthDisplayInfo = document.querySelector(".month").innerHTML;
+  const yearDisplayInfo = document.querySelector(".year").innerHTML;
 
   // get numerical values for year and month to use in math or pass into the make calendar function again
-  const currentMonthDisplay = monthInfo[monthDisplayInfo];
   const currentYearDisplay = parseInt(yearDisplayInfo);
+  const currentMonthDisplay = getMonthInfo(monthDisplayInfo, currentYearDisplay).monthNum;
 
   // the variables to make the new calendar set to 0 so they can be changed in the if else for changing
-  let newMonthDisplay = 0;
-  let newYearDisplay = 0;
+  let newMonthDisplay = currentMonthDisplay;
+  let newYearDisplay = currentYearDisplay;
 
-  // checks if add was passed to the function for the next click
   if (change === "add") {
-    // checks if the current month is december 
-    if (currentMonthDisplay >= 11) {
-      // when the month is currently december it changes the month value to 0 to go to january
+    // if we are in december, go to january and increment the year
+    if (currentMonthDisplay === 11) {
       newMonthDisplay = 0;
-      // it adds one to the year to account for the year change
       newYearDisplay = currentYearDisplay + 1;
     } else {
-      // when the month isn't december it will just add one to the month to change them month and set the year to the currently displaying year
       newMonthDisplay = currentMonthDisplay + 1;
-      newYearDisplay = currentYearDisplay;
     }
-    // when the change function passes minus
-  } else {
+  } 
+  if (change === "minus") {
     if (currentMonthDisplay <= 0) {
-      // when the month is currently january it changes the month value to 11 to go to December
       newMonthDisplay = 11;
-      // it subtracts one to the year to account for the year change
       newYearDisplay = currentYearDisplay - 1;
     } else {
-      // when the month isn't january it will just subtract one to the month to change them month and set the year to the currently displaying year
       newMonthDisplay = currentMonthDisplay - 1;
-      newYearDisplay = currentYearDisplay;
     }
-
   }
 
   // calls the make calendar function again to make the new calendar
-  makeCalendar(newMonthDisplay, newYearDisplay)
+  makeCalendar(newMonthDisplay, newYearDisplay);
 };
 
 function startPeriod() {
-  pass
+  pass;
 
   //  * pseudocode 
   // when the button is clicked to start the period
@@ -163,18 +214,18 @@ function startPeriod() {
   // it should then open maybe a module that will allow the user to select the flow strength of their period
 
   // ? will this need to call make calendar again
-  
+
   // ? maybe the make calendar func above like with the current day will need to call this func in reference to the data logged for period so that when the users scroll months any data they have entered will show
 }
 
 function trackFlow(flowInfo) {
-  pass
-  
+  pass;
+
   // * pseudocode
   // it will have the option buttons for light, medium, heavy
   // user will select an option
   // the button will register the day and add the proper class to the div for that day to display
-  
+
   // ? will this need to call make calendar again
 
   // ? maybe the make calendar func above like with the current day will need to call this func in reference to the data logged for period so that when the users scroll months any data they have entered will show
