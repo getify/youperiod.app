@@ -1,0 +1,102 @@
+.cycle-dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.cycle-info {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  border-radius: 11.3514px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 4px 36px 6px;
+  text-align: center;
+  margin: 15px;
+  width: 150px;
+}
+
+
+.calendar-container {
+  width: max-content;
+  height: max-content;
+  position: relative;
+  display: flex;
+  padding: 2% 0px 0px 0px;
+  justify-content: center;
+  top: 10%;
+  right: 0%;
+  width: 100%;
+  height: 100%;
+}
+
+.calendar {
+  height: max-content;
+  width: max-content;
+  border-radius: 11.3514px;
+  overflow: hidden;
+  padding: 15px 30px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 4px 36px 6px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+
+.year-change {
+  padding: 0px 10px;
+}
+
+.calendar-day-names {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  text-align: center;
+  justify-content: center;
+}
+
+#current-date {
+  border: 2px solid #8E35FF;
+  border-radius: 100%;
+}
+
+/* class to add when a period it predicted to happen if that feature is added */
+.predicted-period {
+  background-color: #8E35FF;
+  opacity: 0.5;
+  color: white;
+  border-radius: 100%;
+}
+
+/* class to add when a user logs that it is period */
+.period-day {
+  border: 2px solid #FF3D00;
+  border-radius: 100%;
+}
+
+/* class for when user indicates that period is light */
+.period-light {
+  background-color: rgba(255, 61, 0, 0.25);
+  color: white;
+}
+
+/* class for when user indicates that period is medium */
+.period-medium {
+  background-color: rgba(255, 61, 0, 0.5);
+  color: white;
+}
+
+/* class for when user indicates that period is heavy */
+.period-heavy {
+  background-color: rgba(255, 61, 0, 0.75);
+  color: white;
+}

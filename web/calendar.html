@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Privacy Policy</title>
+<title>Calendar Dashboard</title>
 
 <meta name="viewport" content="width=device-width">
 <meta name=”robots” content="index, follow">
@@ -25,6 +25,7 @@
 <link rel="canonical" href="https://youperiod.app/about.html" />
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/calendar.css">
 <script integrity="sha256-CoCYJ/tTxH9vJyISOUlowiGKF8OokDL5QBuS3H8R1/g=">
 // compute the vw/vh units more reliably than CSS does itself
 if (document.documentElement && document.documentElement.style && document.documentElement.style.setProperty) {
@@ -54,30 +55,54 @@ if (document.documentElement && document.documentElement.style && document.docum
 </header>
 
 <main>
-	<h2>Privacy Policy</h2>
-	<h3>Welcome to YOU.</h3>
-	
-	<!-- the date would need to be filled when there is a deployment and updated -->
-	<h4>Effective as of [date].</h4>
+  <h2>Dashboard</h2>
+<div class="cycle-dashboard">
+  <div class="cycle-info">
+    <span>29</span>
+    <span>AVG PERIOD CYCLE</span>
+  </div>
+  <div class="cycle-info">
+    <span>29</span>
+    <span>AVG PERIOD CYCLE</span>
+  </div>
+  <div class="cycle-info">
+    <span>29</span>
+    <span>AVG PERIOD CYCLE</span>
+  </div>
+</div>
 
-	<!-- if there are ever any changes it seems to be the normal that there is a way for users to look at old policies -->
-	<h6>See any prior version of our privacy policy <a href="privacy.html">here</a>.</h6>
+<div class="calendar-container">
+  <div class="calendar">
+    <div class="calendar-header">
+      <span class="year-change previous-year" id="previous-year">
+        <
+      </span>
+      <div class="">
+        <span class="month">January</span>
+        <span class="year">2023</span>
+      </div>
+      <span class="year-change next-year" id="next-year">
+        >
+      </span>
+    </div>
+    <div class="calendar-body">
+      <hr>
+      <div class="calendar-day-names">
+        <div>Sun</div>
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
+      </div>
+      <div class="calendar-days">
 
-	<p>By using YOU. (the app) you are believing in our mission to make sure that YOUR sensitive and important data is protected by staying with and belonging to YOU. We are committed to putting the control of your information back in your hands, literally. We NEVER collect or track ANY of the data added while using or setting up YOU., that means we can NEVER give away or sell your data to anyone because we don't have it. This includes your name and email, they are yours and you are protected even from us.</p>
-
-	<h6>All of the data added to YOU. stays on your device protected and secure.</h6>
-	
-	<h4>Information We Collect</h4>
-
-	<p>We DO NOT collect any of your information.</p>
-
-	<h4>Creating A Profile</h4>
-
-	<p>While creating a profile on the first login, the app is creating a local profile and database. Your profile name, data and secret key are encrypted on your device in your own personal local database. We can not and do not identify you during this process. Your information is still yours and only yours.</p>
-	
-	<h4>Changes to This Policy</h4>
-	
-	<p>If there are ever any changes to this policy, they will be displaced here and all previous versions can be found at the link above.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<button>Start Period</button>
 </main>
 
 <footer>&copy;2022 YOU<i class="bold-period" aria-label="stylized period in red color"></i></footer>
@@ -94,6 +119,7 @@ if (document.documentElement && document.documentElement.style && document.docum
 <!----------------------------------->
 
 <script type="module" src="js/window-resize.js"></script>
+<script type="module" src="js/calendar.js"></script>
 
 </body>
 </html>
